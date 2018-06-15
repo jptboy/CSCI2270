@@ -1,0 +1,56 @@
+Items sold:
+microwave 200
+chicken 25
+microwave 2
+bike 60
+chicken 5
+bike 50
+chicken 5
+truck 1000
+bike 60
+truck 300
+bike 100
+truck 2000
+truck 1000
+dresser 2
+truck 2000
+microwave 60
+truck 1000
+truck 500
+dresser 100
+dresser 60
+dresser 450
+truck 500
+dresser 50
+chicken 1
+chicken 5
+truck 1000
+chicken 1
+truck 2000
+chicken 15
+chicken 2
+microwave 15
+chicken 5
+bike 50
+chicken 1
+microwave 2
+chicken 1
+chicken 25
+chicken 15
+microwave 10
+bike 50
+microwave 60
+truck 1000
+chicken 25
+bike 10
+microwave 2
+truck 1000
+truck 2000
+microwave 2
+48
+Items remaining in the message board:
+dresser, for sale, 500
+microwave, wanted, 10
+truck, wanted, 4000
+bike, for sale, 10
+4

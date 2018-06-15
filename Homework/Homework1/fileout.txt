@@ -1,0 +1,4 @@
+Number of items sold: 
+35
+Number of items notsold: 
+29
