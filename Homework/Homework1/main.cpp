@@ -72,7 +72,7 @@ bool findMatch(Item itemarr[],int arraylength,Item newItem)
     {
         for(int i=0; i<arraylength;i++)
         {
-            if(itemarr[i].name==newItem.name && itemarr[i].price<= newItem.price)
+            if((itemarr[i].name==newItem.name && itemarr[i].price<= newItem.price) && itemarr[i].state!=newItem.state)
             {
                 return true;
             }
@@ -82,7 +82,7 @@ bool findMatch(Item itemarr[],int arraylength,Item newItem)
     {
        for(int i=0; i<arraylength;i++)
         {
-            if(itemarr[i].name==newItem.name && itemarr[i].price>= newItem.price)
+            if(itemarr[i].name==newItem.name && itemarr[i].price>= newItem.price && itemarr[i].state!=newItem.state)
             {
                 return true;
             }
@@ -98,7 +98,7 @@ int indexFound(Item itemarr[],int arraylength,Item newItem)
     {
         for(int i=0; i<arraylength;i++)
         {
-            if(itemarr[i].name==newItem.name && itemarr[i].price<= newItem.price)
+            if(itemarr[i].name==newItem.name && itemarr[i].price<= newItem.price && itemarr[i].state!=newItem.state)
             {
                  index = i;
                  break;
@@ -109,7 +109,7 @@ int indexFound(Item itemarr[],int arraylength,Item newItem)
     {
        for(int i=0; i<arraylength;i++)
         {
-            if(itemarr[i].name==newItem.name && itemarr[i].price>= newItem.price)
+            if(itemarr[i].name==newItem.name && itemarr[i].price>= newItem.price && itemarr[i].state!=newItem.state)
             {
                 index=i;
                 break;
@@ -134,8 +134,8 @@ int main(int argc, char const *argv[])
     int itemsremaining=0;
 
 
-    std::cout
-        <<"Items sold: \n";
+    /*std::cout
+        <<"Items sold: \n";*/
 
     while(getline(filein,line))
     {
@@ -179,9 +179,9 @@ int main(int argc, char const *argv[])
     std::cout
         << itemssold
         << std::endl;
-    std::cout
+    /*std::cout
         <<"Items remaining in the message board: "
-        << std::endl;
+        << std::endl;*/
     for(int i=0; i<100; i++)
     {
         if(allItems[i].name!="NULL")

@@ -1,3 +1,0 @@
-chicken, for sale,60
-chicken, for sale,50
-chicken, for sale,40
