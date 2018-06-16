@@ -1,3 +1,6 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 1: Community Garage Sale
 #include <iostream>
 #include <fstream>
 #include "Item.h"
@@ -63,12 +66,12 @@ int Split(std::string s, char a, std::string word[], int size)//split function f
     }
     return subs;// return the number of substrings put into the array
 }
-bool findMatch(Item itemarr[],int arraylength,Item newItem)
+bool findMatch(Item itemarr[],int arraylength,Item newItem)//this function is used to find if there is a matched item existing in the array
 {
-    if(newItem.name=="NULL")
+    if(newItem.name=="NULL")//if the item given has the name null we dont care about the item so we return false
         return false;
 
-    if(newItem.state==" wanted")
+    if(newItem.state==" wanted")//if its wanted we check to see if there is a for sale item that has a lower price than the wanted price and return true
     {
         for(int i=0; i<arraylength;i++)
         {
@@ -78,7 +81,7 @@ bool findMatch(Item itemarr[],int arraylength,Item newItem)
             }
         }
     }
-    else if(newItem.state==" for sale")
+    else if(newItem.state==" for sale")//we do the same thing as we did for the wanted item in this case except we want the other item to be wanted for higher than the for sale price
     {
        for(int i=0; i<arraylength;i++)
         {
@@ -91,7 +94,7 @@ bool findMatch(Item itemarr[],int arraylength,Item newItem)
     return false;
        
 }
-int indexFound(Item itemarr[],int arraylength,Item newItem)
+int indexFound(Item itemarr[],int arraylength,Item newItem)//this function does the samething as the match finding function except it returns the index where the match was found in the array rather than a boolean value
 {
     int index=-1;
     if(newItem.state==" wanted")
@@ -139,22 +142,22 @@ int main(int argc, char const *argv[])
 
     while(getline(filein,line))
     {
-        Split(line,',',lineholder,3);
+        Split(line,',',lineholder,3);//while we can get a line from the filein filestream we put that line into the line variable and split it
 
-        Item newItem(lineholder[0],lineholder[1],std::stod(lineholder[2]));
+        Item newItem(lineholder[0],lineholder[1],std::stod(lineholder[2]));//we construct a new item from each line of the file
         
-        bool found = findMatch(allItems,100,newItem);
+        bool found = findMatch(allItems,100,newItem);//we see if the items match was found by calling found match
         if(!found)
         {
             allItems[allitemsindex] = newItem;
-            allitemsindex++;
+            allitemsindex++;//if we did not find the items match we add it to the end of the array
         }
         else if(found)
         {
            int indexfound=indexFound(allItems,100,newItem);
-           Item defaultItem;
+           Item defaultItem;//otherwise we find where the item was found in the array
            itemssold++;
-           if(newItem.state==" wanted")
+           if(newItem.state==" wanted")//in the next if and else if statement we are just printing the transaction
            {
                std::cout
                     << newItem.name
@@ -170,7 +173,7 @@ int main(int argc, char const *argv[])
                     << newItem.price
                     << std::endl;
            }
-           allItems[indexfound]=defaultItem;
+           allItems[indexfound]=defaultItem;//to delete the items match from the array we set that index in the array to the default struct with default values
 
         }
             
@@ -196,10 +199,10 @@ int main(int argc, char const *argv[])
                     <<allItems[i].price
                     <<std::endl;
             }
-            else if(allItems[i].state==" for sale")
+            else if(allItems[i].state==" for sale")//for loop to print out the remanining items in the message board
             {
                 std::cout
-                    <<allItems[i].name
+                    <<allItems[i].name//we only print out the item if its name is not NULL, doing this allows us to save time complexity by not shifting the array
                     <<", "
                     <<"for sale"
                     <<", "
