@@ -18,9 +18,8 @@ How to build and run:
   g++ -std=c++11 main.cpp -o homework1.o
   
   Run:
-  ./homework1.o garageSale.txt
-
-  ./homework1.o <filename.txt>
+  
+  ./homework1.o filename.txt
 
 # The text file should have this format:
   itemName, wanted, 300
