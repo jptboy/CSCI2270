@@ -38,9 +38,9 @@ void arraySort(wordItem list[], int length);
 
 void printTopN(wordItem wordItemList[],int topN);
 
-void loadWordArray(string filename,wordItem words[],string ignoreWords[]);
+int loadWordArray(string filename,string **array);
 
-int splitLine(string line, string *splitLineArrayptr);
+int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoarray);
 
 
 
@@ -61,8 +61,10 @@ int main(int argc, char const *argv[])
     wordItem *wordsptr= new wordItem[100];
 
     getStopWords(ignoreFile,stopwords);
+    string *allwords = new string[2];
+    int wordcount = loadWordArray(bookFile,&allwords);
 
-    loadWordArray(bookFile,wordsptr,stopwords);
+    
 
 }
 bool isStopWord(string word,string ignoreWords[])
@@ -77,22 +79,55 @@ bool isStopWord(string word,string ignoreWords[])
     return false;
 }
 
-void loadWordArray(string filename,wordItem words[],string ignoreWords[])
+int loadWordArray(string filename,string **array)
 {
     ifstream filein(filename);
     string line;
     string *splitLineptr=NULL;
+    string *allwords=new string[2];
+    int allwordsidx=0;
+    int allwordssize=2;
     while(getline(filein,line))
     {
-        if(line!="\n")
+        if(line!=" ")
         {
             splitLineptr=new string[2];
-            splitLine(line,splitLineptr,&splitLineptr);
+            int linelength= splitLine(line,splitLineptr,&splitLineptr);
+
+            for(int i=0;i<linelength;i++)
+            {
+                if(allwordsidx==allwordssize)
+                {
+                    allwordssize*=2;
+                    string *temp=new string[allwordssize];
+                    for(int i=0;i<allwordssize;i++)
+                    {
+                        temp[i]="NULL";
+                    }
+                    for(int i=0;i<allwordsidx;i++)
+                    {
+                        temp[i]=allwords[i];
+                    }
+                    delete [] allwords;
+                    allwords=temp;
+                    temp=NULL;
+                }
+
+                allwords[allwordsidx++]=splitLineptr[i];
+            }
         }
     }
-
+    string *correctsizearray=new string[allwordsidx];
+    for(int i=0; i<allwordsidx;i++)
+    {
+        correctsizearray[i]=allwords[i];
+    }
+    delete [] allwords;
+    allwords=NULL;
+    *array = correctsizearray;
+    return allwordsidx;
 }
-int splitLine(string line, string *splitLineArrayptr,string **addrToArrPtr)
+int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoarray)
 {
     stringstream splitter(line);
     string word;
@@ -118,7 +153,14 @@ int splitLine(string line, string *splitLineArrayptr,string **addrToArrPtr)
         }
         splitLineArrayptr[arrayitemcount++]=word;
     }
-    *addrToArrPtr=splitLineArrayptr;
+    string *correctsizearray=new string[arrayitemcount];
+    for(int i=0; i<arrayitemcount; i++)
+    {
+        correctsizearray[i]=splitLineArrayptr[i];
+    }
+    delete [] splitLineArrayptr;
+    splitLineArrayptr=NULL;
+    *memaddressofptrtoarray=correctsizearray;
     return arrayitemcount;
 }
 void getStopWords(string ignoreWordFileName,string ignoreWords[])
