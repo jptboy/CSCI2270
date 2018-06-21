@@ -59,12 +59,111 @@ int main(int argc, char const *argv[])
 
     string *stopwords= new string[50];
     wordItem *wordsptr= new wordItem[100];
+    int worditemctr=0;
+    int worditemsize=100;
 
     getStopWords(ignoreFile,stopwords);
     string *allwords = new string[2];
     int wordcount = loadWordArray(bookFile,&allwords);
+    int arraydoublings=0;
 
+    for(int i=0; i<wordcount;i++)
+    {
+        if(isStopWord(allwords[i],stopwords) ||  allwords[i]=="\n" || allwords[i]=="")
+        {
+            allwords[i]="NULL";
+        }
+    }
+
+    int noncommonssize=2;
+    int noncommoncount=0;
+    string *allnoncommons=new string[noncommonssize];
+    for(int i=0; i<wordcount;i++)
+    {
+        if(noncommoncount==noncommonssize)
+        {
+            noncommonssize*=2;
+            string *temp=new string[noncommonssize];
+            for(int i=0; i< noncommonssize;i++)
+            {
+                temp[i]="NULL";
+            }
+
+            for(int i=0;i<noncommoncount;i++)
+            {
+                temp[i]=allnoncommons[i];
+            }
+            delete [] allnoncommons;
+            allnoncommons=temp;
+            temp=NULL;
+        }
+        if(allwords[i]!="NULL")
+            allnoncommons[noncommoncount++]=allwords[i];
+    }
     
+    for(int i=0;i<noncommoncount;i++)
+    {
+        if(worditemctr==worditemsize)
+        {
+            worditemsize*=2;
+            wordItem *temp= new wordItem[worditemsize];
+
+            for(int i=0; i<worditemctr;i++)
+            {
+                temp[i]=wordsptr[i];
+            }
+            delete [] wordsptr;
+            wordsptr=temp;
+            temp=NULL;
+            arraydoublings++;
+        }
+        
+        wordItem newItem(allnoncommons[i],1);
+        //check if word already in array, if it is dont add just increment the count
+        bool found=false;
+        for(int j=0; j<worditemctr;j++)
+        {
+            if(newItem.word==wordsptr[j].word)
+            {
+                wordsptr[j].count++;
+                found=true;
+            }
+        }
+        if(!found)
+        {
+            wordsptr[worditemctr++]=newItem;
+        }
+    }
+
+
+    for(int i=0;i<worditemctr;i++)
+    {
+        for(int j=0;j<worditemctr;j++)
+        {
+            if(wordsptr[i].count>wordsptr[j].count)
+            {
+                wordItem temp;
+                temp = wordsptr[i];
+                wordsptr[i]= wordsptr[j];
+                wordsptr[j]=temp;
+            }
+        }
+    }
+
+    int uniques = worditemctr;
+    int totalarraydoublings=arraydoublings;
+    int totalnoncommonwords=noncommoncount;
+
+    for(int i=0; i<topN; i++)
+    {
+        cout << wordsptr[i].count << "- " << wordsptr[i].word << endl;
+    }    
+    cout << "#" << endl;
+    cout << "Array Doubled: " << totalarraydoublings << endl;
+    cout << "#" << endl;
+    cout << "Unique non-common words: " << uniques <<endl;
+    cout << "#" << endl;
+    cout << "Total non-common words: " << totalnoncommonwords << endl;
 
 }
 bool isStopWord(string word,string ignoreWords[])
