@@ -65,6 +65,9 @@ int main(int argc, char const *argv[])
     getStopWords(ignoreFile,stopwords);
     string *allwords = new string[2];
     int wordcount = loadWordArray(bookFile,&allwords);
+    
+    
+
     int arraydoublings=0;
 
     for(int i=0; i<wordcount;i++)
@@ -100,7 +103,20 @@ int main(int argc, char const *argv[])
         if(allwords[i]!="NULL")
             allnoncommons[noncommoncount++]=allwords[i];
     }
-    
+    wordItem *trasharraytosatisfyassignmentpdf=new wordItem[wordcount];
+
+    for(int i=0; i<wordcount;i++)
+    {
+        if(isStopWord(trasharraytosatisfyassignmentpdf[i].word,stopwords))
+        {
+            trasharraytosatisfyassignmentpdf[i].word="NULL";
+        }
+    }
+    for(int i=0;i<wordcount;i++)
+    {
+        wordItem newItem(allwords[i],1);
+        trasharraytosatisfyassignmentpdf[i]=newItem;
+    }
     for(int i=0;i<noncommoncount;i++)
     {
         if(worditemctr==worditemsize)
@@ -152,7 +168,7 @@ int main(int argc, char const *argv[])
 
     int uniques = worditemctr;
     int totalarraydoublings=arraydoublings;
-    int totalnoncommonwords=noncommoncount;
+    int totalnoncommonwords= getTotalNumberNonStopWords(trasharraytosatisfyassignmentpdf,wordcount);
 
     for(int i=0; i<topN; i++)
     {
@@ -273,4 +289,17 @@ void getStopWords(string ignoreWordFileName,string ignoreWords[])
         ignorearrayIndex++;
     }
     ignorefilein.close();
+}
+int getTotalNumberNonStopWords(wordItem list[],int length)
+{
+    int number=0;
+    for(int i=0; i<length;i++)
+    {
+        if(!(list[i].word=="NULL" ||  list[i].word=="\n" || list[i].word==""))
+        {
+            number++;
+        }
+        
+    }
+    return number;
 }
