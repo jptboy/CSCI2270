@@ -156,10 +156,10 @@ int main(int argc, char const *argv[])
 
     for(int i=0; i<topN; i++)
     {
-        cout << wordsptr[i].count << "- " << wordsptr[i].word << endl;
+        cout << wordsptr[i].count << " - " << wordsptr[i].word << endl;
     }    
     cout << "#" << endl;
-    cout << "Array Doubled: " << totalarraydoublings << endl;
+    cout << "Array doubled: " << totalarraydoublings << endl;
     cout << "#" << endl;
     cout << "Unique non-common words: " << uniques <<endl;
     cout << "#" << endl;
