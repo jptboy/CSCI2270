@@ -7,7 +7,7 @@ using std::cout;
 using std::ofstream;
 using std::ifstream;
 using std::endl;
-using std::stringstream;
+using std::stringstream;//i am doing these individual using statements to avoid polluting the namespace
 struct wordItem
 {
 
@@ -27,7 +27,7 @@ struct wordItem
     }
     string word;
     int count;
-};
+};//struct defintion
 void getStopWords(string ignoreWordFileName,string ignoreWords[]);
 
 bool isStopWord(string word,string ignoreWords[]);
@@ -47,13 +47,14 @@ int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoa
 
 int main(int argc, char const *argv[])
 {
+    //array doubling of structs starts line 127
     if(argc<4)
     {
         cout<<"You ran the program without enough command line arguments, the program will now exit!"<<endl;
         std::exit(1);
-    }
+    }//we give an error if there is less than 4 arguments because the person did not run the file correctly
 
-    int topN=std::stoi(argv[1]);
+    int topN=std::stoi(argv[1]);//integer for topN words
     string bookFile=argv[2];
     string ignoreFile=argv[3];
 
@@ -62,21 +63,26 @@ int main(int argc, char const *argv[])
     int worditemctr=0;
     int worditemsize=100;
 
-    getStopWords(ignoreFile,stopwords);
+    getStopWords(ignoreFile,stopwords);//we call the getStopWords function which fills the stopwrods array in the heap
     string *allwords = new string[2];
-    int wordcount = loadWordArray(bookFile,&allwords);
+    int wordcount = loadWordArray(bookFile,&allwords);//we get the total number of words in the file by calling this function and it also loads the allwords array with everyword in the file as a string
     
     
 
-    int arraydoublings=0;
+    int arraydoublings=0;//variable to track array doublings
 
     for(int i=0; i<wordcount;i++)
     {
-        if(isStopWord(allwords[i],stopwords) ||  allwords[i]=="\n" || allwords[i]=="")
+        if(isStopWord(allwords[i],stopwords) ||  allwords[i]=="\n" || allwords[i]=="")//we take the array with all of the words and if the word is a stop word a newline or empty we change it to NULL
         {
             allwords[i]="NULL";
         }
     }
+
+
+    /*
+    Below is where we took care of the  NULL strings and placed every word that wasnt null into another array
+    */
 
     int noncommonssize=2;
     int noncommoncount=0;
@@ -103,7 +109,7 @@ int main(int argc, char const *argv[])
         if(allwords[i]!="NULL")
             allnoncommons[noncommoncount++]=allwords[i];
     }
-    wordItem *trasharraytosatisfyassignmentpdf=new wordItem[wordcount];
+    wordItem *trasharraytosatisfyassignmentpdf=new wordItem[wordcount];//the assignment said we had to use the gettotalnonstopwords function and I did this to satisfy the requirement because I already found the total number of nonstop words prior
 
     for(int i=0; i<wordcount;i++)
     {
@@ -117,26 +123,31 @@ int main(int argc, char const *argv[])
         wordItem newItem(allwords[i],1);
         trasharraytosatisfyassignmentpdf[i]=newItem;
     }
+
+    /*
+    Here is my array doubling algorithim where I fill the array of struts from the array of strings
+
+    */
     for(int i=0;i<noncommoncount;i++)
     {
-        if(worditemctr==worditemsize)
+        if(worditemctr==worditemsize)//if the number of actual word items equals the actual size of the words item array
         {
-            worditemsize*=2;
-            wordItem *temp= new wordItem[worditemsize];
+            worditemsize*=2;//we multiply the size by two
+            wordItem *temp= new wordItem[worditemsize];//create a new array in the heap and use a temp pointer to point to it
 
             for(int i=0; i<worditemctr;i++)
             {
-                temp[i]=wordsptr[i];
+                temp[i]=wordsptr[i];//we fill that new array with the stuff from the old array
             }
-            delete [] wordsptr;
-            wordsptr=temp;
-            temp=NULL;
-            arraydoublings++;
+            delete [] wordsptr;//we delete the contents of the old array in the heap
+            wordsptr=temp;//we point the pointer to the new array
+            temp=NULL;//we set temp=NULL because we don't want it pointing to anything now
+            arraydoublings++;//increment the amount of array doublings
         }
         
-        wordItem newItem(allnoncommons[i],1);
+        wordItem newItem(allnoncommons[i],1);//as we are iterating through all the words in the array of strings called allnoncommons we generate word items with a count of 1
         //check if word already in array, if it is dont add just increment the count
-        bool found=false;
+        bool found=false;//we check to see if the word item is already in the array and if it is we just increment the count
         for(int j=0; j<worditemctr;j++)
         {
             if(newItem.word==wordsptr[j].word)
@@ -147,33 +158,19 @@ int main(int argc, char const *argv[])
         }
         if(!found)
         {
-            wordsptr[worditemctr++]=newItem;
+            wordsptr[worditemctr++]=newItem;//if not we add it to the array
         }
     }
 
 
-    for(int i=0;i<worditemctr;i++)
-    {
-        for(int j=0;j<worditemctr;j++)
-        {
-            if(wordsptr[i].count>wordsptr[j].count)
-            {
-                wordItem temp;
-                temp = wordsptr[i];
-                wordsptr[i]= wordsptr[j];
-                wordsptr[j]=temp;
-            }
-        }
-    }
+    arraySort(wordsptr,worditemctr);
+    
 
     int uniques = worditemctr;
     int totalarraydoublings=arraydoublings;
     int totalnoncommonwords= getTotalNumberNonStopWords(trasharraytosatisfyassignmentpdf,wordcount);
 
-    for(int i=0; i<topN; i++)
-    {
-        cout << wordsptr[i].count << " - " << wordsptr[i].word << endl;
-    }    
+    printTopN(wordsptr,topN);
     cout << "#" << endl;
     cout << "Array doubled: " << totalarraydoublings << endl;
     cout << "#" << endl;
@@ -193,7 +190,7 @@ bool isStopWord(string word,string ignoreWords[])
     }
     return false;
 }
-
+//this function splits each line into a dynamically sized array(by calling splitline) and loads each word from each dynamically sized array into another dynamically sized array that holds all words and it returns the number of all words loaded
 int loadWordArray(string filename,string **array)
 {
     ifstream filein(filename);
@@ -242,6 +239,7 @@ int loadWordArray(string filename,string **array)
     *array = correctsizearray;
     return allwordsidx;
 }
+//splitting each line into a dynamically sized array
 int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoarray)
 {
     stringstream splitter(line);
@@ -302,4 +300,27 @@ int getTotalNumberNonStopWords(wordItem list[],int length)
         
     }
     return number;
+}
+void arraySort(wordItem wordsptr[], int worditemctr)//wordsptr is list and worditemctr is the length
+{
+    for(int i=0;i<worditemctr;i++)
+    {
+        for(int j=0;j<worditemctr;j++)
+        {
+            if(wordsptr[i].count>wordsptr[j].count)
+            {
+                wordItem temp;
+                temp = wordsptr[i];
+                wordsptr[i]= wordsptr[j];
+                wordsptr[j]=temp;
+            }
+        }
+    }
+}
+void printTopN(wordItem wordsptr[],int topN)
+{
+    for(int i=0; i<topN; i++)
+    {
+        cout << wordsptr[i].count << " - " << wordsptr[i].word << endl;
+    }  
 }
