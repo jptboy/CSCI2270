@@ -1,7 +1,44 @@
 #include <iostream>
 #include "CommunicationNetwork.h"
+#include <sstream>
+#include <fstream>
 using namespace std;
-
+int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoarray, char sep)
+{
+    stringstream splitter(line);
+    string word;
+    int arrayitemcount=0;
+    int arraysize=2;
+    while(getline(splitter,word, sep))
+    {
+        if(arrayitemcount==arraysize)
+        {
+            arraysize*=2;
+            string *temp=new string[arraysize];
+            for(int i=0; i<arraysize;i++)
+            {
+                temp[i]="NULL";
+            }
+            for(int i=0; i<arrayitemcount; i++)
+            {
+                temp[i]=splitLineArrayptr[i];
+            }
+            delete [] splitLineArrayptr;
+            splitLineArrayptr=temp;
+            temp=NULL;
+        }
+        splitLineArrayptr[arrayitemcount++]=word;
+    }
+    string *correctsizearray=new string[arrayitemcount];
+    for(int i=0; i<arrayitemcount; i++)
+    {
+        correctsizearray[i]=splitLineArrayptr[i];
+    }
+    delete [] splitLineArrayptr;
+    splitLineArrayptr=NULL;
+    *memaddressofptrtoarray=correctsizearray;
+    return arrayitemcount;
+}
 CommunicationNetwork::CommunicationNetwork()
 {
     head=NULL;
@@ -11,24 +48,6 @@ CommunicationNetwork::~CommunicationNetwork()
 {
 
 };
-/*
-struct City{
-    std::string cityName;
-    std::string message;
-    City *next;
-    City *previous;
-
-    City(){}; // default constructor
-
-    City(std::string initName, City *initNext, City *initPrevious, std::string initMessage)
-    {
-        cityName = initName;
-        next = initNext;
-        previous = initPrevious;
-        message = initMessage;
-    }
-};
-*/
 void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 {
     if(head==NULL)
@@ -79,11 +98,10 @@ void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
     }
     else
     {
-        City* temp;
+        City* temp=head;
         while(temp!=NULL && temp->cityName!=prev)
         {
             temp=temp->next;
-            return;
         }
         if(temp!=NULL)
         {
@@ -102,24 +120,44 @@ void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 void CommunicationNetwork::buildNetwork()
 {
     addCity("Los Angeles","First");
-    addCity("Phoenix","");
-    
+    addCity("Phoenix","Los Angeles");
     addCity("Denver","");
-    addCity("Dallas","");
-    addCity("St. Louis","");
+    addCity("Dallas","Denver");
+    addCity("St. Louis","Dallas");
     addCity("Chicago","");
-    addCity("Atlanta","");
-    addCity("Washington, D.C","");
+    addCity("Atlanta","Chicago");
+    addCity("Washington, D.C","Atlanta");
     addCity("New York","");
     addCity("Boston","");
-    
 }
-void CommunicationNetwork::transmitMsg(char * msg)
+void CommunicationNetwork::transmitMsg(char* msg)
 {
+    ifstream filein(msg);
+    string line;
+    string* words = new string[2];
+    int wordct=0;
+    while(getline(filein,line))
+    {
+        wordct=splitLine(line,words,&words,' ');
+    }
+    City* temp=head;
 
+    for(int i=0; i<wordct;i++)
+    {
+        while(temp!=NULL)
+        {
+            temp->message=words[i];
+            cout<<temp->cityName<<" received"<<temp->message<<endl;
+            temp->message="";
+            temp=temp->next;
+        }
+    }
+        
+    
 }
 void CommunicationNetwork::printNetwork()
 {
+    //TODO EDGE CASES
     cout << "===CURRENT PATH===" << endl; 
     cout<<"NULL <- ";
     
@@ -136,10 +174,11 @@ void CommunicationNetwork::printNetwork()
     cout << "NULL" << endl; 
     cout << "==================" << endl;
     
+    
 }
 void CommunicationNetwork::deleteCity(std::string name)
 {
-
+    
 }
 void CommunicationNetwork::deleteNetwork()
 {
