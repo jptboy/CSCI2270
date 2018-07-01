@@ -4,7 +4,8 @@ using namespace std;
 
 CommunicationNetwork::CommunicationNetwork()
 {
-    
+    head=NULL;
+    tail=NULL;
 };
 CommunicationNetwork::~CommunicationNetwork()
 {
@@ -30,64 +31,79 @@ struct City{
 */
 void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 {
-    if(head==NULL)//if there is nothing in the linkedlist we always want to do this
+    if(head==NULL)
     {
-        City* newCity=new City(newCityName,NULL,NULL,"NULL");
-        head= newCity;
-        return;
-    }
-    else if(prev=="First" && head!=NULL)//if there is something in the linkedlist and we want to replace the first city
-    {
-        City* newCity=new City(newCityName,head,NULL,"NULL");
+        City* newCity= new City(newCityName,NULL,NULL,"");
         head=newCity;
         return;
     }
-    else if(tail==NULL && (prev=="" || prev==head->cityName) && head!=NULL)//if there is one thing in the linkedlist and we want to add to the tail
+    else if(prev=="First")
     {
-        City* newCity=new City(newCityName,head,NULL,"NULL");
-        tail=newCity;
+        City* newCity= new City(newCityName,head,NULL,"");
+        head->previous=newCity;
+        head = newCity;
         return;
     }
-    else if(tail!=NULL && head!=NULL)//adding at the tail if there are more than 2 things in the linkedlist
+    else if(prev=="")
     {
-        if(prev==tail->cityName)
+        if(tail==NULL)
         {
-            City* newCity=new City(newCityName,tail,NULL,"NULL");
+            City* newCity= new City(newCityName,NULL,head,"");
+            head->next=newCity;
+            tail = newCity;
+            return;
+        }
+        else if(tail!=NULL)
+        {
+            City* newCity= new City(newCityName,NULL,tail,"");
+            tail->next = newCity;
             tail = newCity;
             return;
         }
     }
+    else if(tail!=NULL && tail->cityName==prev)
+    {
+        
+        City* newCity= new City(newCityName,NULL,tail,"");
+        tail->next = newCity;
+        tail = newCity;
+        return;
+        
+    }
+    else if(tail==NULL && head->cityName==prev)
+    {
+        City* newCity= new City(newCityName,NULL,head,"");
+        head->next=newCity;
+        tail = newCity;
+        return;
+    }
     else
     {
         City* temp;
-        temp=head;
-
-        while(temp->cityName != prev && temp!=NULL)
+        while(temp!=NULL && temp->cityName!=prev)
         {
             temp=temp->next;
+            return;
         }
         if(temp!=NULL)
         {
-            City* newCity=new City(newCityName,temp,temp->next,"NULL");
+            City* newCity= new City(newCityName,temp->next,temp,"");
             temp->next->previous=newCity;
             temp->next=newCity;
             return;
         }
         else
         {
-            cout << "Error" << endl;
+            cout << "That city must not exist!" << endl;
             return;
         }
-            
     }
 }
 void CommunicationNetwork::buildNetwork()
 {
-    head=NULL;
-    tail=NULL;
-
     addCity("Los Angeles","First");
     addCity("Phoenix","");
+    
     addCity("Denver","");
     addCity("Dallas","");
     addCity("St. Louis","");
@@ -97,12 +113,6 @@ void CommunicationNetwork::buildNetwork()
     addCity("New York","");
     addCity("Boston","");
     
-    City* temp=head;
-    while(temp!=NULL)
-    {
-        cout << temp->cityName << endl;
-        temp=temp->next;
-    }
 }
 void CommunicationNetwork::transmitMsg(char * msg)
 {
@@ -111,14 +121,18 @@ void CommunicationNetwork::transmitMsg(char * msg)
 void CommunicationNetwork::printNetwork()
 {
     cout << "===CURRENT PATH===" << endl; 
-    cout<<"NULL <-";
+    cout<<"NULL <- ";
     
     City* temp=head;
-    while(temp!=NULL)
+    while(temp->next!=NULL)
     {
-        cout << temp->cityName << endl;
+        cout << temp->cityName << " <-> ";
         temp=temp->next;
-        }
+    }
+    if(tail!=NULL)
+    {
+        cout << tail->cityName << " -> ";
+    }
     cout << "NULL" << endl; 
     cout << "==================" << endl;
     

@@ -21,7 +21,6 @@ void mainMenu()
         cout << "7. Quit" << endl;
         
         getline(cin,option);
-        cout << option << endl;
 
         if(option=="1")
         {
@@ -32,7 +31,7 @@ void mainMenu()
         else if(option=="2")
         {
             network.printNetwork();
-            
+            cout << endl;
         }
         else if(option=="3")
         {
@@ -60,7 +59,6 @@ void mainMenu()
         else
         {
             cout << "Error please enter a valid option" << endl;
-            
         }
     }
 
