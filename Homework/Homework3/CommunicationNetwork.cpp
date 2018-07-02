@@ -184,6 +184,7 @@ void CommunicationNetwork::buildNetwork()
     addCity("Washington, D.C","Atlanta");
     addCity("New York","");
     addCity("Boston","");
+    printNetwork();
 }
 void CommunicationNetwork::transmitMsg(char* msg)
 {
