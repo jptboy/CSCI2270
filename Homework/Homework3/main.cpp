@@ -77,8 +77,6 @@ void mainMenu(string filename)
         else if(option=="7")
         {
             cout << "Goodbye!" << endl;
-            //network.~CommunicationNetwork();//PCOF
-            exit(0);
         }
         else
         {
