@@ -98,12 +98,12 @@ CommunicationNetwork::~CommunicationNetwork()
 };
 void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 {
-    if(head==NULL && !(prev=="First"))
+    if(head==NULL && !(prev=="First" || prev==""))
     {
-        cout << "That is not how you properly use a doubly linked list. Make a head first please. It is blasphemous to try to make a tail before a head!" << endl;
+        cout << "That is not how you properly use a doubly linked list!\n There is nothing in it, so how could there be a previous city with the name you just gave?" << endl;
         return;
     }
-    else if(head==NULL && prev=="First")
+    else if(head==NULL && (prev=="First" || prev==""))
     {
         City* newCity= new City(newCityName,NULL,NULL,"");
         head=newCity;
