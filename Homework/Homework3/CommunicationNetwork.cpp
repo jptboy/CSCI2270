@@ -46,11 +46,16 @@ CommunicationNetwork::CommunicationNetwork()
 };
 CommunicationNetwork::~CommunicationNetwork()
 {
-
+    deleteNetwork();//PCOF
 };
 void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 {
-    if(head==NULL)
+    if(head==NULL && !(prev=="First"))
+    {
+        cout << "That is not how you properly use a doubly linked list. Make a head first please. It is blasphemous to try to make a tail before a head!" << endl;
+        return;
+    }
+    else if(head==NULL && prev=="First")
     {
         City* newCity= new City(newCityName,NULL,NULL,"");
         head=newCity;
@@ -112,13 +117,15 @@ void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
         }
         else
         {
-            cout << "That city must not exist!" << endl;
+            cout << "Previous City does not exist! New City Not Added!" << endl;
             return;
         }
     }
 }
 void CommunicationNetwork::buildNetwork()
 {
+    head=NULL;
+    tail=NULL;
     addCity("Los Angeles","First");
     addCity("Phoenix","Los Angeles");
     addCity("Denver","");
@@ -132,6 +139,11 @@ void CommunicationNetwork::buildNetwork()
 }
 void CommunicationNetwork::transmitMsg(char* msg)
 {
+    if(head==NULL)
+    {
+        cout << "Empty list" << endl;
+        return;
+    }
     ifstream filein(msg);
     string line;
     string* words = new string[2];
@@ -147,9 +159,21 @@ void CommunicationNetwork::transmitMsg(char* msg)
         while(temp!=NULL)
         {
             temp->message=words[i];
-            cout<<temp->cityName<<" received"<<temp->message<<endl;
+            cout<<temp->cityName<<" received "<<temp->message<<endl;
             temp->message="";
             temp=temp->next;
+        }
+        
+        if(tail!=NULL)
+        {
+            temp=tail->previous;
+            while(temp!=NULL)
+            {
+                temp->message=words[i];
+                cout<<temp->cityName<<" received "<<temp->message<<endl;
+                temp->message="";
+                temp=temp->previous;
+            }
         }
     }
         
@@ -157,7 +181,23 @@ void CommunicationNetwork::transmitMsg(char* msg)
 }
 void CommunicationNetwork::printNetwork()
 {
-    //TODO EDGE CASES
+    
+
+    if(head==NULL)
+    {
+        cout << "===CURRENT PATH===" << endl; 
+        cout << "Network is empty!" << endl;
+        cout << "==================" << endl;
+        return;
+    }
+    else if(tail==NULL)
+    {
+        cout << "===CURRENT PATH===" << endl; 
+        cout <<"NULL <- " << head->cityName << " -> " << "NULL" << endl;
+        cout << "==================" << endl;
+        return;
+    }
+
     cout << "===CURRENT PATH===" << endl; 
     cout<<"NULL <- ";
     
@@ -167,10 +207,7 @@ void CommunicationNetwork::printNetwork()
         cout << temp->cityName << " <-> ";
         temp=temp->next;
     }
-    if(tail!=NULL)
-    {
-        cout << tail->cityName << " -> ";
-    }
+    cout << tail->cityName << " -> ";
     cout << "NULL" << endl; 
     cout << "==================" << endl;
     
@@ -178,9 +215,53 @@ void CommunicationNetwork::printNetwork()
 }
 void CommunicationNetwork::deleteCity(std::string name)
 {
-    
+    City* temp = head;
+    while(temp!=NULL && temp->cityName!=name)
+    {
+        temp=temp->next;
+    }
+    if(temp==NULL)
+    {
+        cout << name << " not found" << endl;
+    }
+    else
+    {
+        if(temp==head && tail==NULL)
+        {
+            delete temp;
+            head=NULL;
+        }
+        else if(temp==head)
+        {
+            temp->next->previous=NULL;
+            head=temp->next;
+            delete temp;//PCOE
+        }
+        else if(temp==tail)
+        {
+            temp->previous->next=NULL;
+            tail=temp->previous;
+            delete temp;//PCOE
+        }
+        else
+        {
+            temp->previous->next=temp->next;
+            temp->next->previous=temp->previous;
+            delete temp;//PCOE
+        }
+    }
+}
+void del(City* node)
+{
+    if(node==NULL)
+        return;
+    cout << "deleting " << node->cityName<<endl;
+    delete node;
+    del(node->next);
 }
 void CommunicationNetwork::deleteNetwork()
 {
-
+    del(head);
+    head=NULL;
+    tail=NULL;
 }

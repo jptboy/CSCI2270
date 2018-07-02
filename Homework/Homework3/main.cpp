@@ -8,7 +8,6 @@ using namespace std;
 
 void mainMenu(string filename)
 {
-    
     string option;
     CommunicationNetwork network;
     while(option!="7")
@@ -27,60 +26,67 @@ void mainMenu(string filename)
         if(option=="1")
         {
             network.buildNetwork();
-            cout << endl;
+            
             
         }
         else if(option=="2")
         {
             network.printNetwork();
-            cout << endl;
+            
         }
         else if(option=="3")
         {
             string msgstr = filename;
             const char* msg = msgstr.c_str();
             network.transmitMsg((char*)msg);
-            cout << endl;
+            
         }
         else if(option=="4")
         {
             string cityNewName;
             string cityPreviousName;
-            cout << "Enter a city name: " << endl; 
+            cout << "Enter a city name:" << endl; 
             getline(cin,cityNewName); 
-            cout << "Enter a previous city name: " << endl;
+            cout << "Enter a previous city name:" << endl;
             getline(cin,cityPreviousName);
 
             network.addCity(cityNewName,cityPreviousName);
-            cout << endl;
+            
             
         }
         else if(option=="5")
         {
-            cout << endl;
+            string citytodel;
+            cout << "Enter a city name:" << endl;
+            getline(cin,citytodel);
+            network.deleteCity(citytodel);
             
         }
         else if(option=="6")
         {
-            cout << endl;
+            network.deleteNetwork();
             
         }
         else if(option=="7")
         {
+            cout << "Goodbye!" << endl;
+            //network.~CommunicationNetwork();//PCOF
+            exit(0);
         }
         else
         {
-            cout << "Error please enter a valid option" << endl;
+            cout << "Error please enter a valid option!" << endl;
         }
     }
-
+    
 }
 int main(int argc, char const *argv[])
 {
+    if(argc<2)
+    {
+        cout << "Please give a proper number of arguments! Program will now exit!" << endl;
+        exit(0);
+    }
     mainMenu(argv[1]);
-
-
-
-
     return 0;
 }
