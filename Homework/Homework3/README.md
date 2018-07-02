@@ -21,8 +21,4 @@ How to build and run:
   
 Run:
   
-./homework3.o
-
-# The text file should be one line
-
-the liger yeah yeah yeah
+./homework3.o messageIn.txt
