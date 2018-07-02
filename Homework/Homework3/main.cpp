@@ -1,3 +1,6 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 1: Community Garage Sale
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -10,7 +13,11 @@ void mainMenu(string filename)
 {
     string option;
     CommunicationNetwork network;
-    while(option!="7")
+    while(option!="7")//infinite loop until option equal to 7 for bringing people back to the menu
+    /*
+    The contents of this while loop is just the menu stuff and taking user input, nothing special.
+    Just a series of if else if statements over and over until the user presses 7 and quits.
+    */
     { 
         cout << "======Main Menu======" << endl; 
         cout << "1. Build Network" << endl; 
@@ -82,7 +89,7 @@ void mainMenu(string filename)
 }
 int main(int argc, char const *argv[])
 {
-    if(argc<2)
+    if(argc<2)//to prevent errors if less than number of required command line arguments
     {
         cout << "Please give a proper number of arguments! Program will now exit!" << endl;
         exit(0);
