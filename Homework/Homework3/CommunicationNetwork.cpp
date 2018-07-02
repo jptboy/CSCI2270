@@ -100,7 +100,7 @@ void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
 {
     if(head==NULL && !(prev=="First" || prev==""))
     {
-        cout << "That is not how you properly use a doubly linked list!\n There is nothing in it, so how could there be a previous city with the name you just gave?" << endl;
+        cout << "That is not how you properly use a doubly linked list!\nThere is nothing in it, so how could there be a previous city with the name you just gave?" << endl;
         return;
     }
     else if(head==NULL && (prev=="First" || prev==""))
@@ -114,6 +114,15 @@ void CommunicationNetwork::addCity(std::string newCityName, std::string prev)
         City* newCity= new City(newCityName,head,NULL,"");
         head->previous=newCity;
         head = newCity;
+        if(tail==NULL)
+        {
+            City* temp=head;
+            while(temp->next!=NULL)
+            {
+                temp=temp->next;
+            }
+            tail=temp;
+        }
         return;
     }
     else if(prev=="")
