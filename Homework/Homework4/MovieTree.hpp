@@ -1,6 +1,6 @@
 //
 //  MovieTree.hpp
-//  Assignment-6    
+//  Assignment-6
 //  CSCI 2270
 //
 
@@ -16,7 +16,7 @@ struct MovieNodeLL{
     int quantity;
     MovieNodeLL* next;
     MovieNodeLL(){};
-    
+
     MovieNodeLL(int in_ranking, std::string in_title, int in_year, int in_quantity)
     {
         ranking = in_ranking;
@@ -33,9 +33,9 @@ struct MovieNodeBST{
     MovieNodeBST* leftChild;
     MovieNodeBST* rightChild;
     MovieNodeLL* head;
-    
+
     MovieNodeBST(){};
-    
+
     MovieNodeBST(char in_letter)
     {
         letter = in_letter;
@@ -44,12 +44,12 @@ struct MovieNodeBST{
         rightChild = NULL;
         head = NULL;
     };
-    
+
 };
 
 class MovieTree
 {
-    
+
 public:
     MovieTree();
     ~MovieTree();
@@ -59,9 +59,9 @@ public:
     void addMovieNode(int ranking, std::string title, int releaseYear, int quantity);
     void findMovie(std::string title);
     void rentMovie(std::string title);
-    
+
 protected:
-    
+
 private:
     void DeleteAll(MovieNodeBST * node); //use this for the post-order traversal deletion of the tree
     void printMovieInventory(MovieNodeBST * node);

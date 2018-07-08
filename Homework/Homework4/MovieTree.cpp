@@ -8,7 +8,75 @@ MovieTree::MovieTree()
 
 void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, int quantity)
 {
-    cout << ranking << " " << title << " " << releaseYear << " " << quantity << endl;
+    if(root==NULL)
+    {
+        root = new MovieNodeBST(title[0]);
+        return;
+    }
+    MovieNodeBST* temp = root;
+    while(1)
+    {
+        if(title[0] < temp->letter)
+        {
+            if(temp->leftChild==NULL)
+            {
+                temp->leftChild = new MovieNodeBST(title[0]);
+                temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                break;
+            }
+            temp = temp->leftChild;
+        }
+        else if(title[0] > temp->letter)
+        {
+            if(temp->rightChild==NULL)
+            {
+                temp->rightChild = new MovieNodeBST(title[0]);
+                temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                break;
+            }
+            temp = temp->rightChild;
+        }
+        else if(temp->letter==title[0])
+        {
+            //!PCOME: Inserting into a sorted linkedList will probably be the cause of many bugs
+            if(temp->head==NULL)
+            {
+                temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                break;//or return
+            }
+            else if(temp->head->title>title)
+            {
+                MovieNodeLL* temp3 = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                temp3->next= temp->head;
+                temp->head = temp3;
+                break;
+            }
+            MovieNodeLL* tempLLNode = temp->head;
+
+            while(tempLLNode->next!=NULL && tempLLNode->next->title<title)
+            {
+                tempLLNode=tempLLNode->next;
+                //cout << tempLLNode->title << endl;
+            }
+            if(tempLLNode->next==NULL)
+            {
+                tempLLNode->next = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                break;
+            }
+            else
+            {
+                MovieNodeLL* temp4 = tempLLNode->next;
+                tempLLNode->next = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                tempLLNode->next->next=temp4;
+                break;
+            }
+
+        }
+        else
+        {
+            cout << "Horrible Error! " << endl;
+        }
+    }
 }
 
 
@@ -33,9 +101,6 @@ void MovieTree::rentMovie(std::string title)
 {
 
 }
-
-
-
 void MovieTree::DeleteAll(MovieNodeBST * node)
 {
 
