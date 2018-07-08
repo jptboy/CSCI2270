@@ -6,7 +6,7 @@ using namespace std;
 int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoarray, char sep)//this function is from homework2 and it  is used to split individual lines in a text file
 {
     stringstream splitter(line);
-    string word;
+    string word= "";
     int arrayitemcount=0;
     int arraysize=2;
     while(getline(splitter,word, sep))
@@ -14,7 +14,8 @@ int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoa
         if(arrayitemcount==arraysize)//we double the array if the number of elements has matched the size
         {
             arraysize*=2;
-            string *temp=new string[arraysize];
+            string *temp = NULL;
+            temp=new string[arraysize];
             for(int i=0; i<arraysize;i++)
             {
                 temp[i]="NULL";
@@ -29,7 +30,8 @@ int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoa
         }
         splitLineArrayptr[arrayitemcount++]=word;//otherwise we keep filling it up
     }
-    string *correctsizearray=new string[arrayitemcount];
+    string *correctsizearray = NULL;
+    correctsizearray=new string[arrayitemcount];
     for(int i=0; i<arrayitemcount; i++)
     {
         correctsizearray[i]=splitLineArrayptr[i];
@@ -43,20 +45,21 @@ void mainMenu(string filename)
 {
     MovieTree movies;
     ifstream filein(filename);
-    string line;
+    string line="";
 
     while(getline(filein,line))
     {
-        string *lineholder = new string[2];
+        string *lineholder = NULL;
+        lineholder = new string[2];
         splitLine(line, lineholder, &lineholder, ',');
         movies.addMovieNode(stoi(lineholder[0]), lineholder[1], stoi(lineholder[2]), stoi(lineholder[3]));
-        delete [] lineholder;
+        delete [] lineholder;//PCOF
     }
 
 
 
 
-    string option;
+    string option="";
     while(option!="6")//infinite loop until option equal to 6 for bringing people back to the menu
     /*
     The contents of this while loop is just the menu stuff and taking user input, nothing special.
@@ -75,7 +78,7 @@ void mainMenu(string filename)
 
         if(option=="1")
         {
-            string title;
+            string title="";
             cout << "Enter title:" << endl;
             getline(cin, title);
             movies.findMovie(title);

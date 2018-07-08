@@ -14,7 +14,8 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
         root->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
         return;
     }
-    MovieNodeBST* temp = root;
+    MovieNodeBST* temp = NULL;
+    temp = root;
     while(1)
     {
         if(title[0] < temp->letter)
@@ -52,7 +53,8 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
                 temp->head = temp3;
                 break;
             }
-            MovieNodeLL* tempLLNode = temp->head;
+            MovieNodeLL* tempLLNode = NULL;
+            tempLLNode = temp->head;
 
             while(tempLLNode->next!=NULL && tempLLNode->next->title<title)
             {
@@ -66,7 +68,8 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             }
             else
             {
-                MovieNodeLL* temp4 = tempLLNode->next;
+                MovieNodeLL* temp4 = NULL;
+                temp4 = tempLLNode->next;
                 tempLLNode->next = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 tempLLNode->next->next=temp4;
                 break;
@@ -110,7 +113,8 @@ void MovieTree::findMovie(std::string title)
         cout << "Horrible Error" << endl;
         return;
     }
-    MovieNodeLL* foundMovie = searchLL(checkBST->head, title);
+    MovieNodeLL* foundMovie = NULL;
+    foundMovie = searchLL(checkBST->head, title);
     if(foundMovie==NULL)
     {
         cout << "Movie not found." << endl;
@@ -162,7 +166,8 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     }
     else
     {
-        MovieNodeLL* temp = node->head;
+        MovieNodeLL* temp = NULL;
+        temp = node->head;
         while(temp!=NULL)
         {
             cout <<"Movie: " <<temp->title <<" " << temp->quantity << endl;
@@ -180,7 +185,8 @@ MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
 {
     if(node==NULL)
         return NULL;
-    MovieNodeBST* temp = node;
+    MovieNodeBST* temp = NULL;
+    temp = node;
     while(1)
     {
         if(title[0]<temp->letter)
@@ -207,7 +213,8 @@ MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
 } //use this recursive function to find a pointer to a node in the BST, given a MOVIE TITLE
 MovieNodeLL* MovieTree::searchLL(MovieNodeLL* head, std::string title)
 {
-    MovieNodeLL* temporary = head;
+    MovieNodeLL* temporary = NULL;
+    temporary = head;
 
     while(temporary!=NULL)
     {
