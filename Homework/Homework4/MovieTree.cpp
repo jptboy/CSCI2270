@@ -96,7 +96,37 @@ void MovieTree::deleteMovieNode(std::string title)
 
 void MovieTree::findMovie(std::string title)
 {
+    //check bst for letter
+    MovieNodeBST* checkBST = NULL;
+    checkBST = searchBST(root, title);
 
+    if(checkBST==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+    if(checkBST->head==NULL)
+    {
+        cout << "Horrible Error" << endl;
+        return;
+    }
+    MovieNodeLL* foundMovie = searchLL(checkBST->head, title);
+    if(foundMovie==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+    cout << "Movie Info:" << endl;
+    cout << "===========" << endl;
+    cout << "Ranking:" << foundMovie->ranking << endl;
+    cout << "Title:" << foundMovie->title << endl;
+    cout << "Year:" << foundMovie->year << endl;
+    cout << "Quantity:" << foundMovie->quantity << endl;
+    return;
+    //otherwise check the linkedlist for that specific movies
+    //if linkedlist search comes back NULL return
+
+    //otherwise derefrence the pointer returned and yeah
 }
 void MovieTree::rentMovie(std::string title)
 {
@@ -135,11 +165,46 @@ void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
 }
 MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
 {
-    return NULL;
+    if(node==NULL)
+        return NULL;
+    MovieNodeBST* temp = node;
+    while(1)
+    {
+        if(title[0]<temp->letter)
+        {
+            if(temp->leftChild==NULL)
+            {
+                return NULL;
+            }
+            temp = temp->leftChild;
+        }
+        else if(title[0]>temp->letter)
+        {
+            if(temp->rightChild==NULL)
+            {
+                return NULL;
+            }
+            temp = temp->rightChild;
+        }
+        else if(title[0]==temp->letter)
+        {
+            return temp;
+        }
+    }
 } //use this recursive function to find a pointer to a node in the BST, given a MOVIE TITLE
 MovieNodeLL* MovieTree::searchLL(MovieNodeLL* head, std::string title)
 {
-    return NULL;
+    MovieNodeLL* temporary = head;
+
+    while(temporary!=NULL)
+    {
+        if(temporary->title==title)
+        {
+            break;
+        }
+        temporary=temporary->next;
+    }
+    return temporary;
 } //use this to return a pointer to a node in a linked list, given a MOVIE TITLE and the head of the linked list
 MovieNodeBST* MovieTree::treeMinimum(MovieNodeBST *node)
 {

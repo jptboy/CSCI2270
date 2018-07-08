@@ -75,11 +75,13 @@ void mainMenu(string filename)
 
         if(option=="1")
         {
-
+            string title;
+            cout << "Enter title:" << endl;
+            getline(cin, title);
+            movies.findMovie(title);
         }
         else if(option=="2")
         {
-
 
         }
         else if(option=="3")
