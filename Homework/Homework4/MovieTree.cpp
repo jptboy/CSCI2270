@@ -132,9 +132,22 @@ void MovieTree::rentMovie(std::string title)
 {
 
 }
+void del(MovieNodeLL* node)
+{
+    if(node==NULL)
+        return;
+    cout << "Deleting: " << node->title << endl;
+    delete node;
+    del(node->next);
+}
 void MovieTree::DeleteAll(MovieNodeBST * node)
 {
-
+    if(node==NULL)
+        return;
+    DeleteAll(node->leftChild);
+    DeleteAll(node->rightChild);
+    del(node->head);
+    delete node;
 } //use this for the post-order traversal deletion of the tree
 void MovieTree::printMovieInventory(MovieNodeBST * node)
 {
@@ -213,5 +226,5 @@ MovieNodeBST* MovieTree::treeMinimum(MovieNodeBST *node)
 
 MovieTree::~MovieTree()
 {
-
+    DeleteAll(root);
 };
