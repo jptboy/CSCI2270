@@ -11,6 +11,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
     if(root==NULL)
     {
         root = new MovieNodeBST(title[0]);
+        root->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
         return;
     }
     MovieNodeBST* temp = root;
@@ -21,7 +22,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             if(temp->leftChild==NULL)
             {
                 temp->leftChild = new MovieNodeBST(title[0]);
-                temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                temp->leftChild->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 break;
             }
             temp = temp->leftChild;
@@ -31,7 +32,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             if(temp->rightChild==NULL)
             {
                 temp->rightChild = new MovieNodeBST(title[0]);
-                temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
+                temp->rightChild->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 break;
             }
             temp = temp->rightChild;
@@ -110,10 +111,10 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     if(node==NULL)
         return;
     printMovieInventory(node->leftChild);
-    cout << node-> letter << endl;
-    /*if(node->head==NULL)
+    //cout << node-> letter << endl;
+    if(node->head==NULL)
     {
-        cout << "This shouldn't happen" << endl;
+        cout <<"Error on node: " << node->letter << endl;
     }
     else
     {
@@ -123,7 +124,7 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
             cout << temp->title << endl;
             temp=temp->next;
         }
-    }*/
+    }
     printMovieInventory(node->rightChild);
 
 }
