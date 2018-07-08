@@ -122,7 +122,7 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
         MovieNodeLL* temp = node->head;
         while(temp!=NULL)
         {
-            cout << temp->title << endl;
+            cout <<"Movie: " <<temp->title <<" " << temp->quantity << endl;
             temp=temp->next;
         }
     }
