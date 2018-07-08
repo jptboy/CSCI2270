@@ -84,8 +84,7 @@ void mainMenu(string filename)
         }
         else if(option=="3")
         {
-
-
+            movies.printMovieInventory();
         }
         else if(option=="4")
         {

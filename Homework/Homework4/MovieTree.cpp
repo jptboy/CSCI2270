@@ -82,7 +82,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
 
 void MovieTree::printMovieInventory()
 {
-
+    printMovieInventory(root);
 }
 int MovieTree::countMovieNodes()
 {
@@ -107,6 +107,24 @@ void MovieTree::DeleteAll(MovieNodeBST * node)
 } //use this for the post-order traversal deletion of the tree
 void MovieTree::printMovieInventory(MovieNodeBST * node)
 {
+    if(node==NULL)
+        return;
+    printMovieInventory(node->leftChild);
+    cout << node-> letter << endl;
+    /*if(node->head==NULL)
+    {
+        cout << "This shouldn't happen" << endl;
+    }
+    else
+    {
+        MovieNodeLL* temp = node->head;
+        while(temp!=NULL)
+        {
+            cout << temp->title << endl;
+            temp=temp->next;
+        }
+    }*/
+    printMovieInventory(node->rightChild);
 
 }
 void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
