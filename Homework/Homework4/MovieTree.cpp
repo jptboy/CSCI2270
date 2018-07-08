@@ -111,7 +111,8 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     if(node==NULL)
         return;
     printMovieInventory(node->leftChild);
-    //cout << node-> letter << endl;
+    //cout << "------\n";
+    //cout <<"Movies with letter: " <<node-> letter << endl;
     if(node->head==NULL)
     {
         cout <<"Error on node: " << node->letter << endl;
