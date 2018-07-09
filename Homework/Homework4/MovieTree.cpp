@@ -3,7 +3,7 @@
 using namespace std;
 MovieTree::MovieTree()
 {
-
+    root=NULL;
 };
 
 void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, int quantity)
@@ -92,9 +92,111 @@ int MovieTree::countMovieNodes()
 {
     return 0;
 }
+
+MovieNodeBST* treeMin(MovieNodeBST* node)
+{
+    while(node->leftChild!=NULL)
+        node = node->leftChild;
+    return node;
+}
+MovieNodeBST* deleteBSTNodeHelper(MovieNodeBST* node, char letter)
+{
+    if(node==NULL)
+        return node;
+    else if(letter<node->letter)
+    {
+        node->leftChild = deleteBSTNodeHelper(node->leftChild, letter);
+    }
+    else if(letter > node->letter)
+    {
+
+        node->rightChild = deleteBSTNodeHelper(node->rightChild, letter);
+    }
+    else
+    {
+        if(node->leftChild == NULL && node->rightChild == NULL)
+        {
+            delete node;
+            node = NULL;
+        }
+        else if(node->leftChild == NULL)
+        {
+            MovieNodeBST* tempDel = node;
+            node = node->rightChild;
+            delete tempDel;
+            tempDel = NULL;
+        }
+        else if(node->rightChild == NULL)
+        {
+            MovieNodeBST* tempDel = node;
+            node = node->leftChild;
+            delete tempDel;
+            tempDel = NULL;
+        }
+        else
+        {
+            MovieNodeBST* tempDel = treeMin(node->rightChild);
+            node->letter = tempDel->letter;
+            node->head = tempDel->head;
+            node->rightChild = deleteBSTNodeHelper(node->rightChild, tempDel->letter);
+        }
+    }
+    return node;
+}
 void MovieTree::deleteMovieNode(std::string title)
 {
+    MovieNodeBST* temp = NULL;
+    temp = searchBST(root, title);
+    if(temp==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+    if(temp->head==NULL)
+    {
+        cout << "Horrible Error" << endl;
+        return;
+    }
 
+    if(temp->head->title==title && temp->head->next==NULL)
+    {
+        delete temp->head;
+        temp->head = NULL;
+
+
+        root = deleteBSTNodeHelper(root, title[0]);//pcof
+        return;
+    }
+    else if(temp->head->title==title && temp->head->next!=NULL)
+    {
+        MovieNodeLL* headReplace = NULL;
+        headReplace = temp->head->next;
+        delete temp->head;
+        temp->head = headReplace;
+        return;
+    }
+
+    MovieNodeLL* tempLL = NULL;
+    tempLL = temp->head;
+
+    while(tempLL->next!=NULL && tempLL->next->title!=title)
+    {
+        tempLL=tempLL->next;
+    }
+
+    if(tempLL->next==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+    else
+    {
+        MovieNodeLL* phony = NULL;
+        phony = tempLL->next->next;
+        delete tempLL->next;//PCOF
+        tempLL->next = phony;
+        return;
+    }
 }
 
 void MovieTree::findMovie(std::string title)
@@ -152,6 +254,7 @@ void MovieTree::DeleteAll(MovieNodeBST * node)
     DeleteAll(node->rightChild);
     del(node->head);
     delete node;
+    node=NULL;//PCOF
 } //use this for the post-order traversal deletion of the tree
 void MovieTree::printMovieInventory(MovieNodeBST * node)
 {
@@ -234,4 +337,5 @@ MovieNodeBST* MovieTree::treeMinimum(MovieNodeBST *node)
 MovieTree::~MovieTree()
 {
     DeleteAll(root);
+    root=NULL;
 };

@@ -54,6 +54,7 @@ void mainMenu(string filename)
         splitLine(line, lineholder, &lineholder, ',');
         movies.addMovieNode(stoi(lineholder[0]), lineholder[1], stoi(lineholder[2]), stoi(lineholder[3]));
         delete [] lineholder;//PCOF
+        lineholder = NULL;
     }
 
 
@@ -93,9 +94,10 @@ void mainMenu(string filename)
         }
         else if(option=="4")
         {
-
-
-
+            string title2="";
+            cout << "Enter title:" << endl;
+            getline(cin, title2);
+            movies.deleteMovieNode(title2);
         }
         else if(option=="5")
         {
