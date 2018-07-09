@@ -43,17 +43,17 @@ int splitLine(string line, string *splitLineArrayptr,string **memaddressofptrtoa
 }
 void mainMenu(string filename)
 {
-    MovieTree movies;
+    MovieTree movies;//declaring the movies object
     ifstream filein(filename);
     string line="";
 
-    while(getline(filein,line))
+    while(getline(filein,line))//while we get lines from the text file and parse the lines we call the add movie node function over and over to build the tree
     {
         string *lineholder = NULL;
         lineholder = new string[2];
         splitLine(line, lineholder, &lineholder, ',');
         movies.addMovieNode(stoi(lineholder[0]), lineholder[1], stoi(lineholder[2]), stoi(lineholder[3]));
-        delete [] lineholder;//PCOF
+        delete [] lineholder;//doing this to avoid heap overflow
         lineholder = NULL;
     }
 

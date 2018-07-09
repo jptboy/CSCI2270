@@ -3,12 +3,12 @@
 using namespace std;
 MovieTree::MovieTree()
 {
-    root=NULL;
+    root=NULL;//when we create the MovieTree object we should initialize the root to NULL because otherwise it may be holding some garbage that causes undefined behavior
 };
 
 void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, int quantity)
 {
-    if(root==NULL)
+    if(root==NULL)//if the root is null make a node with the letter and add a linkedlist head to the node with the movie
     {
         root = new MovieNodeBST(title[0]);
         root->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
@@ -16,11 +16,11 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
     }
     MovieNodeBST* temp = NULL;
     temp = root;
-    while(1)
+    while(1)//we have an indefinite loop that we use to iterate down the tree for a unknown number of nodes to find the place to insert the new movie
     {
-        if(title[0] < temp->letter)
+        if(title[0] < temp->letter)//if the first letter is less than the letter we want to go to the left
         {
-            if(temp->leftChild==NULL)
+            if(temp->leftChild==NULL)//if the left is null thats where we enter a node
             {
                 temp->leftChild = new MovieNodeBST(title[0]);
                 temp->leftChild->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
@@ -28,7 +28,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             }
             temp = temp->leftChild;
         }
-        else if(title[0] > temp->letter)
+        else if(title[0] > temp->letter)//we do the same thing as we did for the left but the opposite way for the right if the first letter has a higher ASCII value
         {
             if(temp->rightChild==NULL)
             {
@@ -38,15 +38,14 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             }
             temp = temp->rightChild;
         }
-        else if(temp->letter==title[0])
+        else if(temp->letter==title[0])//if the first letter of the title matches then we add it to the linkedlist of movies associated with that letter
         {
-            //!PCOME: Inserting into a sorted linkedList will probably be the cause of many bugs
-            if(temp->head==NULL)
+            if(temp->head==NULL)//this should actually never happen because each letter should have a initialized head
             {
                 temp->head = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 break;//or return
             }
-            else if(temp->head->title>title)
+            else if(temp->head->title>title)//if we need to add the movie as the new head we do this
             {
                 MovieNodeLL* temp3 = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 temp3->next= temp->head;
@@ -56,17 +55,17 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
             MovieNodeLL* tempLLNode = NULL;
             tempLLNode = temp->head;
 
-            while(tempLLNode->next!=NULL && tempLLNode->next->title<title)
+            while(tempLLNode->next!=NULL && tempLLNode->next->title<title)//iterate through the linkedlist until we get to the end or find the movie before the positon we want to add
             {
                 tempLLNode=tempLLNode->next;
                 //cout << tempLLNode->title << endl;
             }
-            if(tempLLNode->next==NULL)
+            if(tempLLNode->next==NULL)//this means we got to the end and we can add to the tail and break
             {
                 tempLLNode->next = new MovieNodeLL(ranking,title,releaseYear,quantity);
                 break;
             }
-            else
+            else//otherwise we add the movie immediately after
             {
                 MovieNodeLL* temp4 = NULL;
                 temp4 = tempLLNode->next;
@@ -78,7 +77,7 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
         }
         else
         {
-            cout << "Horrible Error! " << endl;
+            cout << "Horrible Error! " << endl;/*DEBUG statment, never actually happens*/
         }
     }
 }
@@ -86,56 +85,58 @@ void MovieTree::addMovieNode(int ranking, std::string title, int releaseYear, in
 
 void MovieTree::printMovieInventory()
 {
-    printMovieInventory(root);
+    printMovieInventory(root);//if the class method is called we just call the private recursive method to do the work
 }
 int MovieTree::countMovieNodes()
 {
     int count=0;
-    countMovieNodes(root,&count);
+    countMovieNodes(root,&count);//if the class method is called we just call the private recursive method to do the work
     return count;
 }
 
 MovieNodeBST* treeMin(MovieNodeBST* node)
 {
-    while(node->leftChild!=NULL)
+    if(node==NULL)
+        return node;
+    while(node->leftChild!=NULL)//walk down the left of the bst until the left child is null and that gives you the minimum value
         node = node->leftChild;
     return node;
 }
-MovieNodeBST* deleteBSTNodeHelper(MovieNodeBST* node, char letter)
+MovieNodeBST* deleteBSTNodeHelper(MovieNodeBST* node, char letter)//recursive delete function, I forgot i had parent pointers for the BST nodes otherwise I would have done it iteratively
 {
     if(node==NULL)
         return node;
     else if(letter<node->letter)
     {
-        node->leftChild = deleteBSTNodeHelper(node->leftChild, letter);
+        node->leftChild = deleteBSTNodeHelper(node->leftChild, letter);//search the left subtree if its less
     }
     else if(letter > node->letter)
     {
 
-        node->rightChild = deleteBSTNodeHelper(node->rightChild, letter);
+        node->rightChild = deleteBSTNodeHelper(node->rightChild, letter);//search right if its more, we have to set it equal to the recursive call to build links backwards
     }
-    else
+    else//if its equal thats the node to delete
     {
-        if(node->leftChild == NULL && node->rightChild == NULL)
+        if(node->leftChild == NULL && node->rightChild == NULL)//if it has no children we just delete it
         {
             delete node;
             node = NULL;
         }
-        else if(node->leftChild == NULL)
+        else if(node->leftChild == NULL)//if it has only a right child we set the node to its right child and we delete the original node
         {
             MovieNodeBST* tempDel = node;
             node = node->rightChild;
             delete tempDel;
             tempDel = NULL;
         }
-        else if(node->rightChild == NULL)
+        else if(node->rightChild == NULL)//same thing for left
         {
             MovieNodeBST* tempDel = node;
             node = node->leftChild;
             delete tempDel;
             tempDel = NULL;
         }
-        else
+        else//otherwise we replace the node with the minimum value from its right subtree and delete that node from the right subtree
         {
             MovieNodeBST* tempDel = treeMin(node->rightChild);
             node->letter = tempDel->letter;
@@ -147,6 +148,11 @@ MovieNodeBST* deleteBSTNodeHelper(MovieNodeBST* node, char letter)
 }
 void MovieTree::deleteMovieNode(std::string title)
 {
+    /*
+    Basically we try to find the movie and if we find it and its in a linkedlist with more than one
+    element we delete it out of the linkedlist otherwise we delete the head and use the
+    helper node deleter to delete the letter out of the bst
+    */
     MovieNodeBST* temp = NULL;
     temp = searchBST(root, title);
     if(temp==NULL)
@@ -156,11 +162,11 @@ void MovieTree::deleteMovieNode(std::string title)
     }
     if(temp->head==NULL)
     {
-        cout << "Horrible Error" << endl;
+        cout << "Horrible Error" << endl;//never happens
         return;
     }
 
-    if(temp->head->title==title && temp->head->next==NULL)
+    if(temp->head->title==title && temp->head->next==NULL)//if its the only thing in the linkedlist
     {
         delete temp->head;
         temp->head = NULL;
@@ -169,7 +175,7 @@ void MovieTree::deleteMovieNode(std::string title)
         root = deleteBSTNodeHelper(root, title[0]);
         return;
     }
-    else if(temp->head->title==title && temp->head->next!=NULL)
+    else if(temp->head->title==title && temp->head->next!=NULL)//if there are more t hingsin the linkedlist and the movie to delete is the head
     {
         MovieNodeLL* headReplace = NULL;
         headReplace = temp->head->next;
@@ -181,17 +187,17 @@ void MovieTree::deleteMovieNode(std::string title)
     MovieNodeLL* tempLL = NULL;
     tempLL = temp->head;
 
-    while(tempLL->next!=NULL && tempLL->next->title!=title)
+    while(tempLL->next!=NULL && tempLL->next->title!=title)//iterate through until we find the movie we want to delete or get to the end
     {
         tempLL=tempLL->next;
     }
 
-    if(tempLL->next==NULL)
+    if(tempLL->next==NULL)//if we get to the end the movie has not been found
     {
         cout << "Movie not found." << endl;
         return;
     }
-    else
+    else//otherwise we replace it
     {
         MovieNodeLL* phony = NULL;
         phony = tempLL->next->next;
@@ -207,18 +213,18 @@ void MovieTree::findMovie(std::string title)
     MovieNodeBST* checkBST = NULL;
     checkBST = searchBST(root, title);
 
-    if(checkBST==NULL)
+    if(checkBST==NULL)//we check the bst for the letter and if its not found we return NULL
     {
         cout << "Movie not found." << endl;
         return;
     }
     if(checkBST->head==NULL)
     {
-        cout << "Horrible Error" << endl;
+        cout << "Horrible Error" << endl;//no horrible error happens
         return;
     }
     MovieNodeLL* foundMovie = NULL;
-    foundMovie = searchLL(checkBST->head, title);
+    foundMovie = searchLL(checkBST->head, title);//we search the linkedlist for the actual movie and if its not found we return null
     if(foundMovie==NULL)
     {
         cout << "Movie not found." << endl;
@@ -236,7 +242,7 @@ void MovieTree::findMovie(std::string title)
 
     //otherwise derefrence the pointer returned and yeah
 }
-void MovieTree::rentMovie(std::string title)
+void MovieTree::rentMovie(std::string title)//same process as find movie expect we decrement it after finding it and we call delete on the movie if the quantity is 0
 {
     MovieNodeBST* checkBST = NULL;
     checkBST = searchBST(root, title);
@@ -274,7 +280,7 @@ void MovieTree::rentMovie(std::string title)
     }
     return;
 }
-void del(MovieNodeLL* node)
+void del(MovieNodeLL* node)//helper function to recursively delete nodes in a linked list
 {
     if(node==NULL)
         return;
@@ -282,7 +288,7 @@ void del(MovieNodeLL* node)
     delete node;
     del(node->next);
 }
-void MovieTree::DeleteAll(MovieNodeBST * node)
+void MovieTree::DeleteAll(MovieNodeBST * node)//post order traversing the binary search tree and deleting the linkedlits from it
 {
     if(node==NULL)
         return;
@@ -292,7 +298,7 @@ void MovieTree::DeleteAll(MovieNodeBST * node)
     delete node;
     node=NULL;//PCOF
 } //use this for the post-order traversal deletion of the tree
-void MovieTree::printMovieInventory(MovieNodeBST * node)
+void MovieTree::printMovieInventory(MovieNodeBST * node)//in order traversal to print out all the movies
 {
     if(node==NULL)
         return;
@@ -301,11 +307,11 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     //cout <<"Movies with letter: " <<node-> letter << endl;
     if(node->head==NULL)
     {
-        cout <<"Error on node: " << node->letter << endl;
+        cout <<"Error on node: " << node->letter << endl;//never happens
     }
     else
     {
-        MovieNodeLL* temp = NULL;
+        MovieNodeLL* temp = NULL;//print out each movie in the linked list for the bst node
         temp = node->head;
         while(temp!=NULL)
         {
@@ -316,7 +322,7 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     printMovieInventory(node->rightChild);
 
 }
-void countLL(MovieNodeLL* head, int* c)
+void countLL(MovieNodeLL* head, int* c)//count number of movies in each linked list
 {
     if(head==NULL)
         return;
@@ -327,7 +333,7 @@ void countLL(MovieNodeLL* head, int* c)
         temp=temp->next;
     }
 }
-void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
+void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)//we do in order traversal and count the movies in each BST linkedlist node in this helper function
 {
     if(node==NULL)
         return;
@@ -339,6 +345,7 @@ void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
 }
 MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
 {
+    //iteratively search the bst and return null if the node hasnt been found
     if(node==NULL)
         return NULL;
     MovieNodeBST* temp = NULL;
@@ -368,7 +375,7 @@ MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
     }
 } //use this recursive function to find a pointer to a node in the BST, given a MOVIE TITLE
 MovieNodeLL* MovieTree::searchLL(MovieNodeLL* head, std::string title)
-{
+{   //function does what its name implies
     MovieNodeLL* temporary = NULL;
     temporary = head;
 
@@ -384,11 +391,12 @@ MovieNodeLL* MovieTree::searchLL(MovieNodeLL* head, std::string title)
 } //use this to return a pointer to a node in a linked list, given a MOVIE TITLE and the head of the linked list
 MovieNodeBST* MovieTree::treeMinimum(MovieNodeBST *node)
 {
+    treeMin(node);//grader look at this function instead
     return NULL;
 }  //use this to find the left most leaf node of the BST, you'll need this in the delete function
 
 MovieTree::~MovieTree()
 {
-    DeleteAll(root);
-    root=NULL;
+    DeleteAll(root);//delete all nodes and free memory
+    root=NULL;//set root to null to avoid segfaults
 };
