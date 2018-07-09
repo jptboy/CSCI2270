@@ -104,7 +104,7 @@ void mainMenu(string filename)
         }
         else if(option=="5")
         {
-            cout << movies.countMovieNodes() << endl;
+            cout <<"Tree contains: "  << movies.countMovieNodes() <<" movies." << endl;
 
         }
         else if(option=="6")

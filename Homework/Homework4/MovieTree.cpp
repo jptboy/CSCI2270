@@ -316,7 +316,17 @@ void MovieTree::printMovieInventory(MovieNodeBST * node)
     printMovieInventory(node->rightChild);
 
 }
-
+void countLL(MovieNodeLL* head, int* c)
+{
+    if(head==NULL)
+        return;
+    MovieNodeLL* temp = head;
+    while(temp!=NULL)
+    {
+        (*c)++;
+        temp=temp->next;
+    }
+}
 void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
 {
     if(node==NULL)
@@ -324,7 +334,7 @@ void MovieTree::countMovieNodes(MovieNodeBST *node, int *c)
     countMovieNodes(node->leftChild,c);
     /*cout << "------\n";
     cout <<"Movies with letter: " <<node-> letter << endl;*/
-    *c = *c + 1;
+    countLL(node->head, c);
     countMovieNodes(node->rightChild,c);
 }
 MovieNodeBST* MovieTree::searchBST(MovieNodeBST *node, std::string title)
