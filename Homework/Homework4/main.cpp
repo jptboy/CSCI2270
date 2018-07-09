@@ -1,3 +1,6 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 4: Movies
 #include <iostream>
 #include <sstream>
 #include <fstream>
