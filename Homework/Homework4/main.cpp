@@ -104,13 +104,12 @@ void mainMenu(string filename)
         }
         else if(option=="5")
         {
-
+            cout << movies.countMovieNodes() << endl;
 
         }
         else if(option=="6")
         {
             cout << "Goodbye!" << endl;
-
         }
         else
         {
