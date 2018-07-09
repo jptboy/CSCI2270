@@ -86,7 +86,10 @@ void mainMenu(string filename)
         }
         else if(option=="2")
         {
-
+            string title="";
+            cout << "Enter title:" << endl;
+            getline(cin, title);
+            movies.rentMovie(title);
         }
         else if(option=="3")
         {

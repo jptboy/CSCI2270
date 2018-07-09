@@ -164,7 +164,7 @@ void MovieTree::deleteMovieNode(std::string title)
         temp->head = NULL;
 
 
-        root = deleteBSTNodeHelper(root, title[0]);//pcof
+        root = deleteBSTNodeHelper(root, title[0]);
         return;
     }
     else if(temp->head->title==title && temp->head->next!=NULL)
@@ -236,7 +236,41 @@ void MovieTree::findMovie(std::string title)
 }
 void MovieTree::rentMovie(std::string title)
 {
+    MovieNodeBST* checkBST = NULL;
+    checkBST = searchBST(root, title);
 
+    if(checkBST==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+    if(checkBST->head==NULL)
+    {
+        cout << "Horrible Error" << endl;
+        return;
+    }
+    MovieNodeLL* foundMovie = NULL;
+    foundMovie = searchLL(checkBST->head, title);
+    if(foundMovie==NULL)
+    {
+        cout << "Movie not found." << endl;
+        return;
+    }
+
+    foundMovie->quantity=((foundMovie->quantity) - 1);
+
+    cout << "Movie has been rented." << endl;
+    cout << "Movie Info:" << endl;
+    cout << "===========" << endl;
+    cout << "Ranking:" << foundMovie->ranking << endl;
+    cout << "Title:" << foundMovie->title << endl;
+    cout << "Year:" << foundMovie->year << endl;
+    cout << "Quantity:" << foundMovie->quantity << endl;
+    if(foundMovie->quantity==0)
+    {
+        deleteMovieNode(foundMovie->title);
+    }
+    return;
 }
 void del(MovieNodeLL* node)
 {
