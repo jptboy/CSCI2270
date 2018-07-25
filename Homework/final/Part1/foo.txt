@@ -1,0 +1,24 @@
+======Main Menu======
+1. Print vertices
+2. Vertex adjacent
+3. Quit
+Atlanta->Miami***New Orleans
+Boston->Chicago***Cleveland***New York
+Boulder->Chicago
+Cheyenne->Portland***Yakima
+Chicago->Boston***Boulder***Cleveland
+Cleveland->Boston***Chicago
+Disneyland->Portland***San Francisco
+Key West->Miami
+Miami->Atlanta***Key West***New Orleans
+New Orleans->Atlanta***Miami
+New York->Boston
+Portland->Cheyenne***Disneyland***San Francisco***Seattle***Yakima
+San Francisco->Disneyland***Portland
+Seattle->Portland***Yakima
+Yakima->Cheyenne***Portland***Seattle
+======Main Menu======
+1. Print vertices
+2. Vertex adjacent
+3. Quit
+Goodbye!
