@@ -1,0 +1,12 @@
+for(unsigned int i=0; i < unvisiteds.size(); i++)
+{
+    if(unvisiteds[i]->name<leastvertex->name)
+        leastvertex=unvisiteds[i];
+}
+
+
+for(unsigned int i=0; i < currentcity->adj.size(); i++)
+{
+    if(currentcity->adj[i].v->visited==false)
+        unvisiteds.push_back(currentcity->adj[i].v);
+}
