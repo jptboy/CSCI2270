@@ -189,7 +189,125 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
 void Graph::shortestWeightedPath(std::string startingCity,
     std::string endingCity)
 {
+    for(unsigned int i=0; i<vertices.size();i++)
+    {
+        vertices[i].visited = false;
+        vertices[i].unweightedDistance = 0;
+        vertices[i].parent = NULL;
+        vertices[i].weightedDistance = 999999;
+    }
 
+
+
+
+    vertex* firstcity;
+    vertex* secondcity;
+
+    bool found = false;
+    bool found2 = false;
+    for(unsigned int i=0; i<vertices.size(); i++)
+    {
+        //cout << "foo" << endl;
+        if(vertices[i].districtID==-1)
+        {
+            cout << "Please identify the districts before checking distances"
+                << endl;
+            return;
+        }
+        if(vertices[i].name == startingCity)
+        {
+            firstcity = &vertices[i];
+            found = true;
+        }
+        if(vertices[i].name == endingCity)
+        {
+            secondcity = &vertices[i];
+            found2 = true;
+        }
+    }
+    if(!(found && found2))
+    {
+        cout << "One or more of the cities does not exist" << endl;
+        return;
+    }
+    else if(firstcity->districtID!=secondcity->districtID)
+    {
+        cout << "No safe path between cities" << endl;
+        return;
+    }
+
+    firstcity->weightedDistance = 0;
+    vector<vertex*> unvisiteds;
+    vector<vertex*> visiteds;
+
+    for(unsigned int i=0; i < vertices.size(); i++)
+    {
+        if(vertices[i].districtID == firstcity->districtID)
+            unvisiteds.push_back(&(vertices[i]));
+    }
+    unvisiteds.insert(unvisiteds.begin(), firstcity);
+    while(unvisiteds.size()>0)
+    {
+        vertex* tempunvisitedsort = NULL;
+        for(unsigned int i=0; i<unvisiteds.size()-1; i++)
+        {
+            for(unsigned int j=0; j<(unvisiteds.size()-1)-i; j++)
+            {
+                if((unvisiteds[i+1]->weightedDistance)<(unvisiteds[i]->weightedDistance))
+                {
+                    tempunvisitedsort = unvisiteds[i];
+                    unvisiteds[i] = unvisiteds[i+1];
+                    unvisiteds[i+1] = tempunvisitedsort;
+                    tempunvisitedsort = NULL;
+                }
+            }
+        }//sorting the list to have the unvisited vertex the least distance from the start at the start
+
+        vertex* currentcity = unvisiteds[0];
+        vector<adjVertex*> neighbors;
+        //find unvisited adjacent nodes
+        for(unsigned int i=0; i<currentcity->adj.size(); i++)
+        {
+            if(!(currentcity->adj[i].v->visited))
+            {
+                neighbors.push_back(&currentcity->adj[i]);
+                //cout <<"From current city: " << currentcity->name << ": "<< currentcity->adj[i].v->name << endl;
+            }
+
+        }
+
+
+        for(unsigned int i=0; i<neighbors.size(); i++)
+        {
+            if(neighbors[i]->v->weightedDistance >
+                (currentcity->weightedDistance) + neighbors[i]->weight)
+            {
+                //cout << "Visited: "<< neighbors[i]->v->name << endl;
+                neighbors[i]->v->weightedDistance = (currentcity->weightedDistance) + neighbors[i]->weight;
+                neighbors[i]->v->parent = currentcity;
+            }
+        }
+        //iterate through unvisited adjacent nodes without sorting
+        currentcity->visited = true;
+        unvisiteds.erase(unvisiteds.begin());
+        //when all nodes are visited mark as visited and pop
+    }
+
+    cout << secondcity->weightedDistance;
+    vector<vertex*>pathofcity;
+    vertex* temporary= secondcity;
+    while(temporary->name!=firstcity->name)
+    {
+        pathofcity.insert(pathofcity.begin(), temporary);
+        temporary = temporary->parent;
+    }
+    pathofcity.insert(pathofcity.begin(), firstcity);
+    temporary=NULL;
+    for(unsigned int i=0; i<pathofcity.size(); i++)
+    {
+        cout << "," << pathofcity[i]->name;
+    }
+    cout << endl;
 }
 vertex* Graph::findVertex(std::string name)
 {

@@ -115,7 +115,14 @@ void mainMenu(string fileName)
         }
         else if(option=="4")
         {
+            string first;
+            string second;
+            cout << "Enter a starting city:" << endl;
+            getline(cin, first);
+            cout << "Enter an ending city:" << endl;
+            getline(cin, second);
 
+            cities.shortestWeightedPath(first, second);
         }
         else if(option=="5")
         {
