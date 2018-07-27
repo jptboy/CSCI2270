@@ -2,6 +2,8 @@
 # Ayush Khanal
 # Professor Christopher Godley Data Structures Section 310
 
+#I have this file structure with everything in the same directory because moodle told me to
+
 Description:
     This project was meant to simulate a road network
 

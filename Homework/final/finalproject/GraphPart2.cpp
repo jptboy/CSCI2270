@@ -1,6 +1,6 @@
 //Ayush Khanal
 //Instructor: Godley
-//Homework 1: Community Garage Sale
+//Homework 4: Final Project
 //IMPORTANT: Read README for build instructions
 #include <iostream>
 #include "Graph.hpp"
