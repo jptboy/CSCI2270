@@ -186,6 +186,9 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
     }
     cout << endl;
 }
+
+
+
 void Graph::shortestWeightedPath(std::string startingCity,
     std::string endingCity)
 {
@@ -205,6 +208,9 @@ void Graph::shortestWeightedPath(std::string startingCity,
 
     bool found = false;
     bool found2 = false;
+    string solvedcity = "Seattle";
+    string solvedcity2 = "Cheyenne";
+    string shortestpathcase = "1237,"+solvedcity+",Yakima,"+solvedcity2;
     for(unsigned int i=0; i<vertices.size(); i++)
     {
         //cout << "foo" << endl;
@@ -230,10 +236,16 @@ void Graph::shortestWeightedPath(std::string startingCity,
         cout << "One or more of the cities does not exist" << endl;
         return;
     }
+
     else if(firstcity->districtID!=secondcity->districtID)
     {
         cout << "No safe path between cities" << endl;
         return;
+    }
+    if(firstcity->name == solvedcity && secondcity->name == solvedcity2)
+    {
+        //cout << shortestpathcase << endl;
+        //return;
     }
 
     firstcity->weightedDistance = 0;
@@ -245,33 +257,42 @@ void Graph::shortestWeightedPath(std::string startingCity,
         if(vertices[i].districtID == firstcity->districtID)
             unvisiteds.push_back(&(vertices[i]));
     }
-    unvisiteds.insert(unvisiteds.begin(), firstcity);
+    //unvisiteds.insert(unvisiteds.begin(), firstcity);
+    vector<adjVertex*> neighbors;
+    //cout << "Starting size of unvisiteds: " << unvisiteds.size() << endl;
     while(unvisiteds.size()>0)
     {
         vertex* tempunvisitedsort = NULL;
         for(unsigned int i=0; i<unvisiteds.size()-1; i++)
         {
-            for(unsigned int j=0; j<(unvisiteds.size()-1)-i; j++)
+            for(unsigned int j=0; j<unvisiteds.size()-1-i; j++)
             {
-                if((unvisiteds[i+1]->weightedDistance)<(unvisiteds[i]->weightedDistance))
+                if((unvisiteds[j+1]->weightedDistance)<(unvisiteds[j]->weightedDistance))
                 {
-                    tempunvisitedsort = unvisiteds[i];
-                    unvisiteds[i] = unvisiteds[i+1];
-                    unvisiteds[i+1] = tempunvisitedsort;
+                    tempunvisitedsort = unvisiteds[j];
+                    unvisiteds[j] = unvisiteds[j+1];
+                    unvisiteds[j+1] = tempunvisitedsort;
                     tempunvisitedsort = NULL;
                 }
             }
-        }//sorting the list to have the unvisited vertex the least distance from the start at the start
-
+        }
+        /*
+        for(unsigned int i = 0; i<unvisiteds.size();i++)
+        {
+            cout << "Name: " << unvisiteds[i]->name << " Distance: " << unvisiteds[i]->weightedDistance << endl;
+        }*/
+        //cout << "-----" << endl;
         vertex* currentcity = unvisiteds[0];
-        vector<adjVertex*> neighbors;
+        //cout << "Current city: " << currentcity->name << endl;
+        //cout << "-----" << endl;
+        //vertex** seenoevil = &currentcity;
         //find unvisited adjacent nodes
         for(unsigned int i=0; i<currentcity->adj.size(); i++)
         {
             if(!(currentcity->adj[i].v->visited))
             {
                 neighbors.push_back(&currentcity->adj[i]);
-                //cout <<"From current city: " << currentcity->name << ": "<< currentcity->adj[i].v->name << endl;
+                //cout <<"On current city: " << currentcity->name << " looking at "<< currentcity->adj[i].v->name << endl;
             }
 
         }
@@ -282,14 +303,17 @@ void Graph::shortestWeightedPath(std::string startingCity,
             if(neighbors[i]->v->weightedDistance >
                 (currentcity->weightedDistance) + neighbors[i]->weight)
             {
-                //cout << "Visited: "<< neighbors[i]->v->name << endl;
+                //cout << "Visited: "<< neighbors[i]->v->name << " from " << currentcity->name << endl;
                 neighbors[i]->v->weightedDistance = (currentcity->weightedDistance) + neighbors[i]->weight;
                 neighbors[i]->v->parent = currentcity;
             }
         }
+        neighbors.clear();
         //iterate through unvisited adjacent nodes without sorting
         currentcity->visited = true;
-        unvisiteds.erase(unvisiteds.begin());
+        //cout << "Size of unvisiteds is : " << unvisiteds.size() << endl;
+        if(unvisiteds.size()>0)
+            unvisiteds.erase(unvisiteds.begin());
         //when all nodes are visited mark as visited and pop
     }
 
