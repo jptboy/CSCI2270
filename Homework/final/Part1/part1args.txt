@@ -1,9 +1,0 @@
-./part1.o zombieCities.txt > part1.txt
-1
-2
-Yakima
-Seattle
-2
-Seattle
-New York
-3

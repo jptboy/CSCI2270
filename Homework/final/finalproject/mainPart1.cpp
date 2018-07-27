@@ -1,6 +1,10 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 1: Community Garage Sale
+//IMPORTANT: Read README for build instructions
 #include <iostream>
 #include <fstream>
-#include "Graph.hpp"
+#include "Graph.h"
 #include <sstream>
 #include <string>
 using namespace std;
@@ -79,7 +83,7 @@ void mainMenu(string fileName)
 
 
     string option="";
-    while(option!="5")//infinite loop until option equal to 3 for bringing people back to the menu
+    while(option!="3")//infinite loop until option equal to 3 for bringing people back to the menu
 
     //The contents of this while loop is just the menu stuff and taking user input, nothing special.
     //Just a series of if else if statements over and over until the user presses 3 and quits.
@@ -87,10 +91,8 @@ void mainMenu(string fileName)
     {
         cout << "======Main Menu======" << endl;
         cout << "1. Print vertices" << endl;
-        cout << "2. Find districts" << endl;
-        cout << "3. Find shortest path" << endl;
-        cout << "4. Find shortest weighted path" << endl;
-        cout << "5. Quit" << endl;
+        cout << "2. Vertex adjacent" << endl;
+        cout << "3. Quit" << endl;
 
         getline(cin,option);
 
@@ -100,31 +102,23 @@ void mainMenu(string fileName)
         }
         else if(option=="2")
         {
-            cities.assignDistricts();
+            string first;
+            string second;
+
+            cout << "Enter first city:" << endl;
+            getline(cin,first);
+            cout << "Enter second city:" << endl;
+            getline(cin,second);
+            if(cities.isAdjacent(first, second))
+            {
+                cout << "True" << endl;
+            }
+            else
+            {
+                cout << "False" << endl;
+            }
         }
         else if(option=="3")
-        {
-            string first;
-            string second;
-            cout << "Enter a starting city:" << endl;
-            getline(cin, first);
-            cout << "Enter an ending city:" << endl;
-            getline(cin, second);
-
-            cities.shortestPath(first, second);
-        }
-        else if(option=="4")
-        {
-            string first;
-            string second;
-            cout << "Enter a starting city:" << endl;
-            getline(cin, first);
-            cout << "Enter an ending city:" << endl;
-            getline(cin, second);
-
-            cities.shortestWeightedPath(first, second);
-        }
-        else if(option=="5")
         {
             cout << "Goodbye!" << endl;
         }
@@ -137,12 +131,9 @@ void mainMenu(string fileName)
 }
 int main(int argc, char const *argv[])
 {
-    if(argc<2)//to prevent errors if less than number of required
-    //command line arguments
+    if(argc<2)//to prevent errors if less than number of required command line arguments
     {
-        cout
-            << "Please give a proper number of arguments! Program will now exit!"
-            << endl;
+        cout << "Please give a proper number of arguments! Program will now exit!" << endl;
         return 1;
     }
     mainMenu(argv[1]);

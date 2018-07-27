@@ -1,3 +1,7 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 1: Community Garage Sale
+//IMPORTANT: Read README for build instructions
 #ifndef GRAPH_H
 #define GRAPH_H
 #include<vector>

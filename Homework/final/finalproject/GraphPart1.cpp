@@ -1,3 +1,7 @@
+//Ayush Khanal
+//Instructor: Godley
+//Homework 1: Community Garage Sale
+//IMPORTANT: Read README for build instructions
 #include <iostream>
 #include "Graph.h"
 using namespace std;
