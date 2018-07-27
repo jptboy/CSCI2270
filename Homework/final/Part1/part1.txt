@@ -21,4 +21,18 @@ Yakima->Cheyenne***Portland***Seattle
 1. Print vertices
 2. Vertex adjacent
 3. Quit
+Enter first city:
+Enter second city:
+True
+======Main Menu======
+1. Print vertices
+2. Vertex adjacent
+3. Quit
+Enter first city:
+Enter second city:
+False
+======Main Menu======
+1. Print vertices
+2. Vertex adjacent
+3. Quit
 Goodbye!

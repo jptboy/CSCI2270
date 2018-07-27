@@ -118,7 +118,7 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
     }
     if(!(found && found2))
     {
-        cout << "One or more of the cities does not exist" << endl;
+        cout << "One or more of the cities doesn't exist" << endl;
         return;
     }
     else if(firstcity->districtID!=secondcity->districtID)
@@ -233,7 +233,7 @@ void Graph::shortestWeightedPath(std::string startingCity,
     }
     if(!(found && found2))
     {
-        cout << "One or more of the cities does not exist" << endl;
+        cout << "One or more of the cities doesn't exist" << endl;
         return;
     }
 

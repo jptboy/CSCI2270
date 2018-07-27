@@ -1,0 +1,66 @@
+./part2.o zombieCities.txt > part2.txt
+1
+3
+Yakima
+Disneyland
+4
+New York
+Boston
+2
+1
+3
+Yakima
+Gangland
+3
+Yakima
+New York
+3
+Yakima
+Disneyland
+3
+Seattle
+Cheyenne
+3
+Cheyenne
+Seattle
+4
+New York
+Gangland
+4
+New York
+Yakima
+4
+New York
+Boston
+4
+Boulder
+New York
+4
+New York
+Boulder
+4
+Seattle
+Cheyenne
+4
+Cheyenne
+Seattle
+4
+Miami
+Atlanta
+4
+Atlanta
+Miami
+4
+New Orleans
+Key West
+4
+Key West
+New Orleans
+4
+Yakima
+Disneyland
+4
+Disneyland
+Yakima
+2
+5
