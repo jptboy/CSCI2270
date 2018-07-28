@@ -15,6 +15,9 @@ Graph::~Graph()
 };
 void Graph::addEdge(std::string v1, std::string v2, int weight)
 {
+    /*
+    This is the same add edge function as part 1
+    */
     unsigned int cityIndex = stoi(v2);
     /*
     cout
@@ -50,6 +53,8 @@ void Graph::addEdge(std::string v1, std::string v2, int weight)
 }
 void Graph::addVertex(std::string name)
 {
+    //this is the same add vertex function as part 1
+    //except we initialize a comple more parameters
     vertex *newVertex = new vertex;
     newVertex->name = name;
     newVertex->districtID=-1;
@@ -59,9 +64,10 @@ void Graph::addVertex(std::string name)
 }
 void Graph::displayEdges()
 {
+    //this is the same display edges function except we also include district id
     for(unsigned int i=0; i<vertices.size(); i++)
     {
-        cout << vertices[i].districtID << ":" << vertices[i].name << "->";
+        cout << vertices[i].districtID << ":" << vertices[i].name << "->";//including district id
         for(unsigned int j=0; j<(vertices[i].adj.size()); j++)
         {
             cout << vertices[i].adj[j].v->name;
@@ -73,7 +79,7 @@ void Graph::displayEdges()
 }
 
 void Graph::assignDistricts()
-{
+{//all this function does is call dfs to label the districts if the current vertex is unvisited
     int currentDistrictId = 1;
     for(unsigned int i=0; i<vertices.size(); i++)
     {
@@ -87,7 +93,7 @@ void Graph::assignDistricts()
 }
 void Graph::shortestPath(std::string startingCity, std::string endingCity)
 {
-    for(unsigned int i=0; i<vertices.size();i++)
+    for(unsigned int i=0; i<vertices.size();i++)//setting values to defaults for traversal
     {
         vertices[i].visited = false;
         vertices[i].unweightedDistance = 0;
@@ -99,7 +105,12 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
 
     vertex* firstcity;
     vertex* secondcity;
-
+    //things
+    /*
+    1.we check if the citiies actually exist
+    2. whether they are in the same district
+    if they are not we return some sort of error
+    */
     bool found = false;
     bool found2 = false;
     for(unsigned int i=0; i<vertices.size(); i++)
@@ -109,7 +120,7 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
             cout << "Please identify the districts before checking distances" << endl;
             return;
         }
-        if(vertices[i].name == startingCity)
+        if(vertices[i].name == startingCity)//if we find it we set it outerhwise we dont
         {
             firstcity = &vertices[i];
             found = true;
@@ -122,24 +133,24 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
     }
     if(!(found && found2))
     {
-        cout << "One or more of the cities doesn't exist" << endl;
+        cout << "One or more of the cities doesn't exist" << endl;//return error
         return;
     }
     else if(firstcity->districtID!=secondcity->districtID)
     {
-        cout << "No safe path between cities" << endl;
+        cout << "No safe path between cities" << endl;//return error
         return;
     }
 
-    firstcity->unweightedDistance=0;
-    vector<vertex*> queue;
+    firstcity->unweightedDistance=0;//set distance of starting city to 0
+    vector<vertex*> queue;//create queue
     queue.push_back(firstcity);
     vertex* currentcity = queue[0];
     while(queue.size()>0)
     {
-        currentcity = queue[0];
+        currentcity = queue[0];//we set the current city to the 0th element in the queue
         //queue.erase(queue.begin());
-        currentcity->visited = true;
+        currentcity->visited = true;//we set it to visited
 
         vector<vertex*> unvisiteds;
         for(unsigned int i=0; i < currentcity->adj.size(); i++)
@@ -147,13 +158,13 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
             if(currentcity->adj[i].v->visited==false)
                 unvisiteds.push_back(currentcity->adj[i].v);
         }
-
+        //we see if it any unvisited neighbors and if it doesnt we pop the head of the queue
         if(unvisiteds.size()==0)
         {
             queue.erase(queue.begin());
         }
         else
-        {
+        {//otherwise we push the unvisited neighbor with the next alphabetical name into the queue and repeat the loop
             vertex dummy;
             string dummystr = "ZZZZZZZZZZZZZZZZZZZZ";
             dummy.name=dummystr;
@@ -173,7 +184,7 @@ void Graph::shortestPath(std::string startingCity, std::string endingCity)
 
     }
 
-    int shortestdistance = secondcity->unweightedDistance;
+    int shortestdistance = secondcity->unweightedDistance;//printing stuff out
     vector<vertex*>path;
     vertex* temp= secondcity;
     while(temp->name!=firstcity->name)
@@ -206,7 +217,7 @@ void Graph::shortestWeightedPath(std::string startingCity,
 
 
 
-
+    //IMPORTANT:this function does pretty much the same stuff as the BFS shortest unweighted path function
     vertex* firstcity;
     vertex* secondcity;
 
@@ -214,7 +225,8 @@ void Graph::shortestWeightedPath(std::string startingCity,
     bool found2 = false;
     string solvedcity = "Seattle";
     string solvedcity2 = "Cheyenne";
-    string shortestpathcase = "1237,"+solvedcity+",Yakima,"+solvedcity2;
+    //string shortestpathcase = "1237,"+solvedcity+",Yakima,"+solvedcity2;
+    //checking for errors
     for(unsigned int i=0; i<vertices.size(); i++)
     {
         //cout << "foo" << endl;
@@ -267,6 +279,9 @@ void Graph::shortestWeightedPath(std::string startingCity,
     while(unvisiteds.size()>0)
     {
         vertex* tempunvisitedsort = NULL;
+        //to find the shortest path we just do BFS with a queue sorted by weighted distance to the origin
+
+        //also we mark a node visited when we have solved all of its neighbors
         for(unsigned int i=0; i<unvisiteds.size()-1; i++)
         {
             for(unsigned int j=0; j<unvisiteds.size()-1-i; j++)
@@ -320,7 +335,7 @@ void Graph::shortestWeightedPath(std::string startingCity,
             unvisiteds.erase(unvisiteds.begin());
         //when all nodes are visited mark as visited and pop
     }
-
+    //printing stuff
     cout << secondcity->weightedDistance;
     vector<vertex*>pathofcity;
     vertex* temporary= secondcity;
@@ -358,6 +373,7 @@ void Graph::DFSLabel(std::string startingCity, int distID)
         }
     }
     stack.push_back(startingVert);
+    //we use a stack to do DFS and label the nodes
     while(stack.size()>0)
     {
         string dummystring = "ZZZZZZZZZZZZ";

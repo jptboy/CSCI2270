@@ -51,7 +51,7 @@ void mainMenu(string fileName)
     Graph cities;
     ifstream filein(fileName);
     string line;
-    for(int i=0;getline(filein,line);i++)
+    for(int i=0;getline(filein,line);i++)//this loop does the same thing as the loop in part1, just initializng the graph object
     {
         string *lineholder = NULL;
         lineholder = new string[2];
@@ -83,10 +83,10 @@ void mainMenu(string fileName)
 
 
     string option="";
-    while(option!="5")//infinite loop until option equal to 3 for bringing people back to the menu
+    while(option!="5")//infinite loop until option equal to 5 for bringing people back to the menu
 
     //The contents of this while loop is just the menu stuff and taking user input, nothing special.
-    //Just a series of if else if statements over and over until the user presses 3 and quits.
+    //Just a series of if else if statements over and over until the user presses 5 and quits.
 
     {
         cout << "======Main Menu======" << endl;

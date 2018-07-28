@@ -4,6 +4,8 @@
 
 #I have this file structure with everything in the same directory because moodle told me to
 
+#I have also included a video to help you grade the link to it is in the video folder
+
 Description:
     This project was meant to simulate a road network
 

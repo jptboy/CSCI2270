@@ -14,12 +14,12 @@ void Graph::addEdge(std::string v1, std::string v2, int weight)
         << " and: " << vertices[cityIndex].name << endl;
     */
     adjVertex *newAdjVertex = new adjVertex;
-    newAdjVertex->weight = weight;
-    newAdjVertex->v = &(vertices[cityIndex]);
+    newAdjVertex->weight = weight;//we set the weight
+    newAdjVertex->v = &(vertices[cityIndex]);// all we are doing in this function is adding an adjacnet vertex
 
     unsigned int startingIdx=0;
     bool found = false;
-    for(unsigned int i=0; i<vertices.size(); i++)
+    for(unsigned int i=0; i<vertices.size(); i++)//we find the vertex to add to
     {
         if(vertices[i].name==v1)
         {
@@ -30,7 +30,7 @@ void Graph::addEdge(std::string v1, std::string v2, int weight)
     }
     if(found)
     {
-        vertices[startingIdx].adj.push_back(*newAdjVertex);
+        vertices[startingIdx].adj.push_back(*newAdjVertex);//we add it to the vector
         //cout << "Edge has been added." << endl;
         delete newAdjVertex;
     }
@@ -42,7 +42,7 @@ void Graph::addEdge(std::string v1, std::string v2, int weight)
 }
 void Graph::addVertex(std::string name)
 {
-    vertex *newVertex = new vertex;
+    vertex *newVertex = new vertex;//here we just push a new vertex into the vector
     newVertex->name = name;
     vertices.push_back(*newVertex);
     delete newVertex;
@@ -53,11 +53,11 @@ int Graph::isAdjacent(std::string v1, std::string v2)
     {
         if(vertices[i].name==v1)
         {
-            for(unsigned int j=0; j<vertices[i].adj.size(); j++)
+            for(unsigned int j=0; j<vertices[i].adj.size(); j++)//iterating through the vecotrs adjacent vertex
             {
                 if(vertices[i].adj[j].v->name==v2)
                 {
-                    return 1;
+                    return 1;//if we find it we return 1 or break
                 }
             }
             break;
@@ -67,7 +67,7 @@ int Graph::isAdjacent(std::string v1, std::string v2)
     {
         if(vertices[i].name==v2)
         {
-            for(unsigned int j=0; j<vertices[i].adj.size(); j++)
+            for(unsigned int j=0; j<vertices[i].adj.size(); j++)//we do the same thing as the above for loop
             {
                 if(vertices[i].adj[j].v->name==v1)
                 {
@@ -98,7 +98,7 @@ void Graph::displayEdges()
             cout << vertices[i].name << "->" << endl;
         }
         */
-        for(unsigned int j=0; j<(vertices[i].adj.size()); j++)
+        for(unsigned int j=0; j<(vertices[i].adj.size()); j++)//we just display the vertex and its edges with iteration
         {
             cout << vertices[i].adj[j].v->name;
             if(j!=vertices[i].adj.size()-1)

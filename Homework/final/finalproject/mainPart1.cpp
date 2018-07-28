@@ -51,7 +51,7 @@ void mainMenu(string fileName)
     Graph cities;
     ifstream filein(fileName);
     string line;
-    for(int i=0;getline(filein,line);i++)
+    for(int i=0;getline(filein,line);i++)//this just creates the graph object by initializing its fields from the file
     {
         string *lineholder = NULL;
         lineholder = new string[2];
@@ -60,7 +60,7 @@ void mainMenu(string fileName)
         {
             for(int j=1;j<linelength;j++)
             {
-                cities.addVertex(lineholder[j]);
+                cities.addVertex(lineholder[j]);//creating the cities vertices
             }
         }
         else
